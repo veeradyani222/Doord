@@ -149,7 +149,7 @@
 
     .hero-container {
       position: relative;
-      width:98vw;
+      width:100vw;
       align-items: center;
       justify-content: center;
       height: 150vh;
@@ -285,10 +285,9 @@
     
     .vector {
       position: absolute;
-      width: 98vw;
-    
+      width: 100vw;
       z-index: 113;
-      height: 45vw;
+      height: 49vw;
     
     }
   
