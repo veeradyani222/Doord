@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2vh 4vw;
+  position: relative;
+  background:  #E9FEFF;
+  height: 10vh;
+}
+
+.navbar-left {
+  flex-shrink: 0;
+  width: 15vw;
+}
+
+.navbar-center {
+  display: flex;
+  gap: 3vw;
+  width: 50vw;
+  justify-content: center;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;
+  padding: 1vh 1.5vw;
+  font-size: 1.8vh;
+  font-family: "Inter", sans-serif;;
+  transition: all 0.3s ease;
+}
+
+.nav-link.active {
+  color: #1177ff;
+  font-weight: bold;
+  border-bottom: 0.3vh solid #1177ff;
+}
+
+.navbar-right {
+  width: 15vw;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 1.5vw;
+}
+
+.sign-in-btn, .sign-up-btn {
+  padding: 1vh 1.5vw;
+  border-radius: 0.5vh;
+  text-decoration: none;
+  font-size: 1.8vh;
+  font-family: "Inter" , sans-serif;
+}
+
+.sign-in-btn {
+  color: #1177ff;
+}
+
+.sign-up-btn {
+  background: #1177ff;
+  color: white;
+}
+
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 1vh;
+}
+
+.mobile-menu {
+  display: none;
+}
+
+/* Mobile Styles */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 2vh 5vw;
+    height: 8vh;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: block;
+  }
+
+  .navbar-left {
+    width: 40vw;
+  }
+
+  .hamburger-btn {
+    display: block;
+    width: 8vw;
+    height: 8vw;
+  }
+
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100vw;
+    background: white;
+    padding: 2vh 5vw;
+    box-shadow: 0 0.2vh 0.4vh rgba(0,0,0,0.1);
+  }
+
+  .mobile-nav-link {
+    padding: 2vh 3vw;
+    text-decoration: none;
+    color: #333;
+    border-bottom: 0.1vh solid #eee;
+    font-size: 2vh;
+  }
+
+  .mobile-nav-link.active {
+    color: #007bff;
+    font-weight: bold;
+  }
+
+  .mobile-auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    padding: 2vh 0;
+  }
+
+  .mobile-sign-in-btn,
+  .mobile-sign-up-btn {
+    padding: 1.5vh;
+    text-align: center;
+    border-radius: 0.5vh;
+    text-decoration: none;
+    font-size: 2vh;
+  }
+
+  .mobile-sign-in-btn {
+    color: #007bff;
+    border: 0.1vh solid #007bff;
+  }
+
+  .mobile-sign-up-btn {
+    background: #007bff;
+    color: white;
+  }
+}

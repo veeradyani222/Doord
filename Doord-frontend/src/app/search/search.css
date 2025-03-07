@@ -1,0 +1,117 @@
+.search-section {
+  position: absolute;
+  top: 37vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  width: 85vw;
+  background: white;
+  padding: 2.5vh 2vw;
+  border-radius: 20px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Aligns items horizontally */
+  gap: 2vw; /* Adds spacing between elements */
+}
+
+.search-section h2 {
+  font-size: 1.8vw;
+  font-weight: 700;
+  color: #1A1A1A;
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
+  white-space: nowrap;
+}
+
+.search-bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1.2vw;
+  width: 1.2vw;
+  height: auto;
+  opacity: 0.6;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  padding: 1.8vh 1.8vw 1.8vh 3.5vw;
+  border: 1px solid #E0E0E0;
+  border-radius: 64px;
+  font-size: 1vw;
+  background: #F8F8F8;
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
+  color: #E0E0E0;
+}
+
+.search-section button {
+  background: #1177FF;
+  color: white;
+  padding: 1.8vh 2.5vw;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1vw;
+  font-weight: 600;
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.search-section button:hover {
+  background: #0052cc;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 102, 255, 0.2);
+}
+
+@media (max-width: 500px) {
+  .search-section {
+      flex-direction: row;
+      align-items: center;
+      gap: 1vh;
+      top: 17vh;
+      padding: 2.5vw 2vw;
+  }
+
+  .search-section h2 {
+      font-size: 3vw;
+      text-align: center;
+  }
+
+  .search-bar {
+      flex-direction: column;
+      gap: 1vh;
+      width: 100%;
+  }
+
+  
+  .search-section button {
+        font-size: 1.8vw;
+        width: 15vw;
+        border-radius: 2vh;
+        padding: 1.8vw 2.5vw;
+  }
+
+  .search-input-wrapper input {
+    width: 40vw;
+    padding: 1.8vw 1.8vw 1.8vw 3.5vw;
+    border: 1px solid #E0E0E0;
+    border-radius: 2vh;
+    font-size: 1vw;
+  
+  }
+}
+
+
