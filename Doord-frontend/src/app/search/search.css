@@ -81,8 +81,9 @@
       flex-direction: row;
       align-items: center;
       gap: 1vh;
-      top: 20vh;
+      top: 21vh;
       padding: 2.5vw 2vw;
+      width: 90vw;
   }
 
   .search-section h2 {
@@ -99,17 +100,17 @@
   
   .search-section button {
         font-size: 1.8vw;
-        width: 15vw;
+        width: 12vw;
         border-radius: 2vh;
         padding: 1.8vw 2.5vw;
   }
 
   .search-input-wrapper input {
-    width: 40vw;
+    width: 45vw;
     padding: 1.8vw 1.8vw 1.8vw 3.5vw;
     border: 1px solid #E0E0E0;
     border-radius: 2vh;
-    font-size: 1vw;
+    font-size: 2vw;
   
   }
 }
