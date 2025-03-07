@@ -217,11 +217,11 @@
     /* Individual tools positioning */
     .hero-1 {
       position: absolute;
-      left: -7vh;
+      left: -15vw;
       bottom: 5vh;
       transform: rotate(-10deg);
       z-index: 1000;
-      height: 20vh;
+      height: 13vh;
     
     }
     
@@ -240,8 +240,8 @@
       position: absolute;
       transform: translateX(-55%);
       bottom: 4vw;
-      width: 25vh;
-      height: 30vh;
+      width: 20vh;
+      height: 15vh;
       height: auto;
       z-index: 10;
     }
@@ -258,9 +258,9 @@
     
     .hero-5 {
       position: absolute;
-      right: 2vh;
+      right: 1vh;
       bottom: 17vw;
-      width: 17vh;
+      width: 7vh;
       transform: scale(2.5) rotate(-5deg);
       height: auto;
       z-index: 1000;
@@ -286,12 +286,10 @@
     .vector {
       position: absolute;
       width: 60vh;
-      bottom: 0;
+      bottom: -6vh;
       z-index: 113;
-      height: 62vw;
+      height: 46vh;
       right: -7vh;
-      bottom: 1vh;
-      
     }
   
     .search-area{
