@@ -285,10 +285,12 @@
     
     .vector {
       position: absolute;
-      width: 45vh;
+      width: 60vh;
       bottom: 0;
       z-index: 113;
-      height: 47vw;
+      height: 62vw;
+      right: -7vh;
+      bottom: 1vh;
       
     }
   
