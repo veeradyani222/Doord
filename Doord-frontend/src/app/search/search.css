@@ -84,6 +84,7 @@
       top: 21vh;
       padding: 2.5vw 2vw;
       width: 90vw;
+      gap: 1vw;
   }
 
   .search-section h2 {
