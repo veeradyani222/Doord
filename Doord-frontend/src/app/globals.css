@@ -240,8 +240,8 @@
       position: absolute;
       transform: translateX(-55%);
       bottom: 4vw;
-      width: 20vh;
-      height: 15vh;
+      width: 25vh;
+      height: 25vh;
       height: auto;
       z-index: 10;
     }
@@ -276,20 +276,20 @@
     }
     
     .polygon-left {
-      left: -2vh;
+      left: -2vw;
     }
     
     .polygon-right {
-      right: -2vh;
+      right: -2vw;
     }
     
     .vector {
       position: absolute;
-      width: 60vh;
-      bottom: -6vh;
+      width: 98vw;
+    
       z-index: 113;
-      height: 46vh;
-      right: -7vh;
+      height: 50vw;
+    
     }
   
     .search-area{
