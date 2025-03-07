@@ -26,9 +26,7 @@ const Navbar = () => {
           <Image 
             src={Logo}
             alt="Logo" 
-            width={88} 
-            height={32} 
-            priority
+            className='logo-nav'
           />
         </Link>
       </div>
@@ -62,12 +60,11 @@ const Navbar = () => {
           className='hamburger-btn mobile-only'
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
-          <Image 
-            src={isMenuOpen ? "/assets/close.png" : Menu} 
-            alt="menu" 
-            width={24} 
-            height={24}
-          />
+      <Image 
+  className="menubtn" 
+  src={isMenuOpen ? "/assets/close.png" : Menu} 
+  alt="menu" 
+/>
         </button>
       </div>
 

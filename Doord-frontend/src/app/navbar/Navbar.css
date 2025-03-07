@@ -152,4 +152,13 @@
     background: #007bff;
     color: white;
   }
+
+  .menubtn{
+height: 8vh;
+margin-top: -2vh;
+  }
+
+  .logo-nav{
+    height: 8vh;
+  }
 }

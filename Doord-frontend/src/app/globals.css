@@ -285,10 +285,9 @@
     
     .vector {
       position: absolute;
-      width: 100vw;
+      width: 98vw;
       z-index: 113;
-      height: 46vw;
-    
+      height: 44vw;
     }
   
     .search-area{
