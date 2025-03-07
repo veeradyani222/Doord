@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './about.css';
+import './About.css';
 
 // Convert to Server Component since it doesn't need client-side interactivity
 
