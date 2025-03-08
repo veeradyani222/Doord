@@ -77,7 +77,7 @@ export default function SignIn() {
           <Image src={Facebook} alt="Facebook" className="social-icon" width={40} height={40} />
         </div>
 
-        <div className='oruseconts'><div className='oruse'> <Link href="/forgotpassword" className='forgot-password'>Having Issues with your password?</Link></div></div>
+        <div className='oruseconts'><div className='oruse'> <Link href="/ForgotPassword" className='forgot-password'>Having Issues with your password?</Link></div></div>
 
         {error && <p style={{ color: 'red' }}>{error}</p>}
       </div>

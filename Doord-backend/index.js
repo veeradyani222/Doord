@@ -252,7 +252,7 @@ const fetchUser = async (req, res, next) => {
 };
 
 // Forgot password route
-app.post('/forgot-password', async (req, res) => {
+app.post("/forgot-password", async (req, res) => {
     try {
         const { email } = req.body;
         const user = await Users.findOne({ email });
@@ -261,81 +261,90 @@ app.post('/forgot-password', async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Generate reset code
+        // Generate OTP
         const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
-        const resetToken = jwt.sign({ userId: user._id, resetCode }, 'secret_ecom', { expiresIn: '15m' });
+        const resetToken = jwt.sign({ userId: user._id }, "secret_ecom", { expiresIn: "15m" });
 
-        pendingVerifications[email] = {
-            resetCode,
-            resetToken,
-            createdAt: Date.now()
-        };
+        // Store OTP temporarily
+        pendingVerifications[email] = { resetCode, resetToken, createdAt: Date.now() };
 
-        // Send reset code email
+        // Send OTP via Email
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
+            service: "gmail",
+            auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
         });
 
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: email,
-            subject: 'Password Reset Code',
-            html: `
-                <h2>Password Reset</h2>
-                <p>Hi ${user.name},</p>
-                <p>Your password reset code is: <strong>${resetCode}</strong></p>
-                <p>This code will expire in 15 minutes.</p>
-            `
+            subject: "Password Reset Code",
+            html: `<h2>Password Reset</h2><p>Hi ${user.name},</p><p>Your OTP is: <strong>${resetCode}</strong></p><p>This code expires in 15 minutes.</p>`,
         });
 
-        res.json({
-            success: true,
-            message: "Password reset code sent to your email",
-            resetToken
-        });
+        res.json({ success: true, message: "OTP sent to email", resetToken });
 
     } catch (error) {
-        console.error("Error in forgot password:", error);
-        res.status(500).json({ message: "Error sending reset code" });
+        console.error("Forgot Password Error:", error);
+        res.status(500).json({ message: "Error sending OTP" });
     }
 });
 
-// Reset password route
-app.post('/reset-password', async (req, res) => {
+// ⬇️ 2️⃣ Verify OTP (New Route)
+app.post("/verify-forgot-otp", async (req, res) => {
     try {
-        const { resetToken, resetCode, newPassword } = req.body;
-
-        const decoded = jwt.verify(resetToken, 'secret_ecom');
+        const { resetToken, resetCode } = req.body;
+        const decoded = jwt.verify(resetToken, "secret_ecom");
         const user = await Users.findById(decoded.userId);
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
+        // Check if OTP matches
         const pendingReset = pendingVerifications[user.email];
         if (!pendingReset || pendingReset.resetCode !== resetCode) {
-            return res.status(400).json({ message: "Invalid or expired reset code" });
+            return res.status(400).json({ message: "Invalid or expired OTP" });
         }
 
-        // Update password
-        user.password = newPassword;
+        res.json({ success: true, message: "OTP verified!" });
+
+    } catch (error) {
+        console.error("OTP Verification Error:", error);
+        res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+});
+
+// ⬇️ 3️⃣ Reset Password (After OTP Verification)
+app.post("/reset-password", async (req, res) => {
+    try {
+        const { resetToken, newPassword } = req.body;
+        const decoded = jwt.verify(resetToken, "secret_ecom");
+        const user = await Users.findById(decoded.userId);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Check if OTP was verified
+        if (!pendingVerifications[user.email]) {
+            return res.status(400).json({ message: "OTP verification required" });
+        }
+
+        // Hash and update password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
         await user.save();
 
         // Clean up
         delete pendingVerifications[user.email];
 
-        res.json({ success: true, message: "Password reset successful" });
+        res.json({ success: true, message: "Password reset successful!" });
 
     } catch (error) {
-        console.error("Error in reset password:", error);
+        console.error("Reset Password Error:", error);
         res.status(400).json({ message: "Invalid or expired token" });
     }
 });
-
 
 
 app.get('/allusers', async (req, res) => {
