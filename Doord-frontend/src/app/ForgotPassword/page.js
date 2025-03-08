@@ -8,7 +8,12 @@ import Arrow from "./../assets/arrow-right.png";
 
 export default function ForgotPassword() {
   const [step, setStep] = useState("email"); // 'email', 'otpVerification', 'resetPassword'
-  const [formData, setFormData] = useState({ email: "", newPassword: "" });
+  const [formData, setFormData] = useState({
+    email: "",
+    newPassword: "",
+    confirmPassword: "", // Added for password matching
+  });
+  
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [resetToken, setResetToken] = useState(null);
   const [message, setMessage] = useState(null);
@@ -18,7 +23,7 @@ export default function ForgotPassword() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  
   const handleOtpChange = (index, value) => {
     if (!/^\d*$/.test(value)) return;
 
@@ -69,7 +74,7 @@ export default function ForgotPassword() {
     setError(null);
 
     try {
-      const response = await fetch("https://doord.onrender.com/verify-otp", { // Assuming separate OTP route
+      const response = await fetch("https://doord.onrender.com/verify-forgot-otp", { // Assuming separate OTP route
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -89,32 +94,40 @@ export default function ForgotPassword() {
       setError("OTP verification failed.");
     }
 };
+
 const handleResetPassword = async (e) => {
     e.preventDefault();
     setMessage(null);
     setError(null);
 
-    try {
-      const response = await fetch("https://doord.onrender.com/reset-password", { 
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          resetToken, // Token from OTP verification
-          newPassword: formData.newPassword, // Send password now
-        }),
-      });
+    // Check if passwords match
+    if (formData.newPassword !== formData.confirmPassword) {
+        setError("Passwords do not match.");
+        return;
+    }
 
-      const data = await response.json();
-      if (response.ok) {
-        setMessage("Password reset successful! Redirecting to Sign In...");
-        setTimeout(() => router.push("/signin"), 2000);
-      } else {
-        setError(data.message || "Password reset failed.");
-      }
+    try {
+        const response = await fetch("https://doord.onrender.com/reset-password", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                resetToken, // This should be stored from the forgot password step
+                newPassword: formData.newPassword,
+            }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            setMessage("Password reset successful! Redirecting to Sign In...");
+            setTimeout(() => router.push("/signin"), 2000);
+        } else {
+            setError(data.message || "Password reset failed.");
+        }
     } catch (err) {
-      setError("Password reset failed.");
+        setError("Password reset failed.");
     }
 };
+
 
   return (
     <div>
@@ -169,20 +182,41 @@ const handleResetPassword = async (e) => {
           </div>
         )}
 
-        {step === "resetPassword" && (
-          <div>
-            <div className="signupheads">
-              <div className="head1">SET NEW PASSWORD</div>
-            </div>
-            <form onSubmit={handleResetPassword} className="inputs-form">
-              <div className="input-order">
-                <label>New Password</label>
-                <input type="password" name="newPassword" value={formData.newPassword} onChange={handleChange} required />
-              </div>
-              <button type="submit" className="submit-btn">Reset Password</button>
-            </form>
-          </div>
-        )}
+{step === "resetPassword" && (
+  <div>
+    <div className="signupheads">
+      <div className="head1 headd1">RESET PASSWORD</div>
+    </div>
+    <form onSubmit={handleResetPassword} className="inputs-form">
+  <div className="input-order">
+    <label>New Password</label>
+    <input 
+      type="password" 
+      name="newPassword" 
+      value={formData.newPassword} 
+      onChange={handleChange} 
+      required 
+    />
+  </div>
+  <div className="input-order">
+    <label>Re-Enter New Password</label>
+    <input 
+      type="password" 
+      name="confirmPassword"  // Changed name
+      value={formData.confirmPassword}  // Uses confirmPassword now
+      onChange={handleChange} 
+      required 
+    />
+  </div>
+  
+  <button className="signinbtn" type="submit">
+    <div>Reset Password</div>
+    <Image src={Arrow} alt="Go" className="social-icon" width={40} height={40} />
+  </button>
+</form>
+  </div>
+)}
+
 
         <div className="signupheads">
           {error && <div className="head2" style={{ color: "red" }}>{error}</div>}

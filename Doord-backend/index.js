@@ -314,10 +314,15 @@ app.post("/verify-forgot-otp", async (req, res) => {
     }
 });
 
-// ⬇️ 3️⃣ Reset Password (After OTP Verification)
 app.post("/reset-password", async (req, res) => {
     try {
         const { resetToken, newPassword } = req.body;
+
+        if (!resetToken || !newPassword) {
+            return res.status(400).json({ message: "Missing required fields" });
+        }
+
+        // Verify reset token
         const decoded = jwt.verify(resetToken, "secret_ecom");
         const user = await Users.findById(decoded.userId);
 
@@ -325,17 +330,17 @@ app.post("/reset-password", async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Check if OTP was verified
+        // Ensure OTP was verified before resetting password
         if (!pendingVerifications[user.email]) {
             return res.status(400).json({ message: "OTP verification required" });
         }
 
-        // Hash and update password
+        // Hash the new password
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         user.password = hashedPassword;
         await user.save();
 
-        // Clean up
+        // Clean up verification record
         delete pendingVerifications[user.email];
 
         res.json({ success: true, message: "Password reset successful!" });
@@ -345,7 +350,6 @@ app.post("/reset-password", async (req, res) => {
         res.status(400).json({ message: "Invalid or expired token" });
     }
 });
-
 
 app.get('/allusers', async (req, res) => {
     try {
