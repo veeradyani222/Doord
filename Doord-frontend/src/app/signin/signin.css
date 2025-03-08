@@ -197,3 +197,207 @@
 .social-icon {
   cursor: pointer; /* Makes them clickable */
 }
+
+
+@media screen and (max-width:500px) {
+
+    .signup-container .container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        font-family: "Zen Kaku Gothic Antique", sans-serif;
+        position: relative;
+    }
+    
+    /* Center the Signup Box */
+    .signup-container {
+        width: 85vw;
+        margin: 5vh auto;
+    }
+    
+    /* Center Heading */
+    .signupheads {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Centers Head 1 */
+      gap: 0.5vh;
+      font-family: "Zen Kaku Gothic Antique", sans-serif;
+      width: auto;
+      margin: 4vh auto;
+    }
+    
+    /* Head 1 (Big Title) */
+    .signupheads .head1 {
+      font-size: 2vh;
+      font-weight: 900;
+      text-align: center; /* Centered */
+      width: fit-content; /* Only takes the space it needs */
+    }
+    
+    /* Head 2 (Smaller Text Below) */
+    .signupheads .head2 {
+      font-size: 1.5vh;
+      font-weight: 400;
+      text-transform: uppercase;
+      text-align: left; /* Aligns to the left */
+      width: auto /* Ensures it stays within Head 1's space */
+    }
+    
+    /* Form */
+    .signup-container form {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Label */
+    .signup-container label {
+      font-size: 1.6vh; /* Smaller font */
+      color: #666;
+      font-weight: 400;
+      font-family: "Zen Kaku Gothic Antique", sans-serif;
+      text-transform: capitalize;
+      background: white;
+      padding: 0 6px; /* Prevents label text from overlapping input border */
+      position: absolute;
+      top: -8px; /* Moves label slightly above the input */
+      left: 14px; /* Moves label a bit to the left */
+      z-index: 10; /* Ensures label is above input */
+    }
+    
+    /* Input Fields */
+    .signup-container input {
+      width: 55vw;
+      padding: 12px;
+      border: 1px solid #444; /* Dark gray border */
+      border-radius: 5px;
+      font-size: 14px; /* Smaller text */
+      margin-bottom: 1vh; /* Increased to avoid overlap */
+      color: #555; /* Dark gray text */
+      font-family: "Inter", sans-serif;
+      position: relative;
+      background: white;
+    }
+    
+    /* Ensures proper positioning */
+    .signup-container .input-order {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    
+    /* Button (same width as input fields) */
+    .signup-container .signinbtn {
+        width: 65vw;
+        background: #1177FF;
+        border: none;
+        border-radius: 1vh;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+        margin: 0 auto;
+        padding: 2vh;
+        text-align: left;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .signup-container button:hover {
+        background: #0056b3;
+    }
+    
+    /* Error & Success Messages */
+    .signup-container .message {
+        text-align: center;
+        margin-top: 10px;
+    }
+    
+    .signup-container .message.success {
+        color: green;
+    }
+    
+    .signup-container .message.error {
+        color: red;
+    }
+    
+    /* OTP Input */
+    .signup-container .otp-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+    
+    .signup-container .otp-input {
+        width: 18%;
+        height: 50px;
+        font-size: 24px;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    /* Input Section */
+    .signup-container .inputs-form {
+        width: 55vw;
+        margin: 0 auto;
+    }
+    
+    /* Sign-in Link (Right-Aligned) */
+    .container1 {
+        display: flex;
+        justify-content: flex-end;
+        padding: 1.5vh;
+    }
+    
+    .head3 {
+        font-size: 1.5vh;
+        font-family: "Zen Kaku Gothic Antique", sans-serif;
+    }
+    
+    .head3 a {
+        color: black;
+        text-decoration: underline;
+        font-weight: 700;
+        text-decoration-thickness: 2;
+    }
+    
+    /* Form Layout */
+    .input-order {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+    }
+    
+    .oruseconts
+    {display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 2vh;
+      margin-bottom: 2vh;
+    }
+    
+    .oruseconts a {
+        color: #444;
+    }
+    
+    .oruse{
+      text-transform: uppercase;
+      font-family: "Zen Kaku Gothic Antique", sans-serif; 
+      font-size: 1.5vh;
+    }
+    
+    .otherbtns {
+      display: flex;
+      justify-content: center; /* Centers the images horizontally */
+      align-items: center; /* Aligns them in the middle */
+      gap: 2vh; /* Adds space between images */
+      margin-top: 2vh; /* Optional: Adjust spacing from other elements */
+    }
+    
+    .social-icon {
+      cursor: pointer; /* Makes them clickable */
+    }
+    
+    
+}

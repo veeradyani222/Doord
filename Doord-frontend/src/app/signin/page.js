@@ -45,7 +45,7 @@ export default function SignIn() {
     <div>
       <div className='container1'>
         <div className='head3'>
-          New here? <Link href="/signup">Sign Up</Link>
+          Not a member yet? <Link href="/signup">JOIN NOW</Link>
         </div>
       </div>
       
