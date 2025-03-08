@@ -27,13 +27,14 @@ export default function Home() {
           <Image src={Hero1} alt="Tool 1" className="hero-1" />
           <Image src={Hero2} alt="Broom" className="hero-2" />
           <div className="tools">
-            <Image src={Hero3} alt="Toolbox" className="hero-3" />
-          </div>
+          <Image src={Hero3} alt="Toolbox" className="hero-3" />
+        </div>
           <Image src={Hero4} alt="Tool 4" className="hero-4" />
           <Image src={Hero5} alt="Tool 5" className="hero-5" />
         </div>
-        
-        <Search />
+      </div>
+      <div className="search-area">
+    <Search/>
       </div>
     </div>
   );
