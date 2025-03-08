@@ -335,9 +335,8 @@ app.post("/reset-password", async (req, res) => {
             return res.status(400).json({ message: "OTP verification required" });
         }
 
-        // Hash the new password
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-        user.password = hashedPassword;
+        // Update password (without hashing)
+        user.password = newPassword;
         await user.save();
 
         // Clean up verification record
