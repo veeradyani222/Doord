@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import './signup.css'
+import './SignUp.css'
 
 export default function Signup() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
