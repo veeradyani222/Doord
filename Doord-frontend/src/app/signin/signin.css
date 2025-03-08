@@ -149,12 +149,12 @@
     padding: 1.5vh;
 }
 
-.head3 {
+.headd3 {
     font-size: 2vh;
     font-family: "Zen Kaku Gothic Antique", sans-serif;
 }
 
-.head3 a {
+.headd3 a {
     color: black;
     text-decoration: underline;
     font-weight: 700;
@@ -223,25 +223,20 @@
     }
 
     .signupheads .head1 {
-        font-size: 2.5vh; /* Bigger text */
+        font-size: 2vh; /* Bigger text */
     }
 
+    .headd3 a {
+        color: #1177FF;
+        text-decoration: none;
+        
+    }
     .signupheads .head2 {
-        font-size: 1.8vh;
+        font-size: 1.3vh;
         text-align: center;
     }
-/* Input Section */
-.signup-container .inputs-form {
-    width: 90vw;
-    margin: 0 auto;
-}
 
-    /* Center Inputs */
-    .signup-container input {
-        width: 95%;
-        margin: 1vh auto;
-        display: block;
-    }
+    
 
     /* Center Button */
     .signup-container .signinbtn {
@@ -276,8 +271,16 @@
     }
 
     .signup-container label {
-        top: -1px; /* Moves label slightly above the input */
+        top: -5px; /* Moves label slightly above the input */
        
+      }
+      .signup-container input,
+      .signup-container button {
+          width: 85vw; /* Ensures both inputs and button take full container width */
+      }
+  
+      .signup-container .inputs-form {
+          width: 100%; /* Ensures the form container is also full width */
       }
       
 }

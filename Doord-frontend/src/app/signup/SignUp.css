@@ -39,7 +39,6 @@
 .signupheads .head2 {
   font-size: 1.5vh;
   font-weight: 400;
-  text-transform: uppercase;
   width: auto;
 }
 
@@ -149,10 +148,8 @@
 }
 
 .head3 a {
-    color: black;
-    text-decoration: underline;
-    font-weight: 700;
-    text-decoration-thickness: 2px;
+    color: #1177FF;
+    text-decoration: none;
 }
 
 /* Form Layout */
@@ -224,14 +221,11 @@
 
     /* Center Inputs */
     .signup-container input {
-        width: 95%;
-        margin: 1vh auto;
-        display: block;
+    
     }
 
     /* Center Button */
     .signup-container button {
-        width: 70vw;
         justify-content: center;
         text-align: center;
     }
@@ -264,5 +258,14 @@
     /* Fix Label Position */
     .signup-container label {
         top: -1px;
+    }
+
+    .signup-container input,
+    .signup-container button {
+        width: 85vw; /* Ensures both inputs and button take full container width */
+    }
+
+    .signup-container .inputs-form {
+        width: 100%; /* Ensures the form container is also full width */
     }
 }
