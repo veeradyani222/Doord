@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 .navbar {
   display: flex;
@@ -6,7 +6,7 @@
   justify-content: space-between;
   padding: 2vh 4vw;
   position: relative;
-  background:  #E9FEFF;
+  background: #E9FEFF;
   height: 10vh;
 }
 
@@ -27,7 +27,7 @@
   color: #333;
   padding: 1vh 1.5vw;
   font-size: 1.8vh;
-  font-family: "Inter", sans-serif;;
+  font-family: "Inter", sans-serif;
   transition: all 0.3s ease;
 }
 
@@ -53,7 +53,7 @@
   border-radius: 0.5vh;
   text-decoration: none;
   font-size: 1.8vh;
-  font-family: "Inter" , sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .sign-in-btn {
@@ -65,16 +65,119 @@
   color: white;
 }
 
+/* Hamburger Button */
 .hamburger-btn {
-  display: none;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 1vh;
+  padding: 0;
+  width: 12vw;
+  height: 12vw;
+  position: absolute;
+  right: 5vw;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.mobile-menu {
+.hamburger-btn img {
+  width: 8vw;
+  height: 8vw;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.hamburger-btn .menubtn {
+  display: block;
+}
+
+.hamburger-btn .removebtn {
   display: none;
+}
+
+.hamburger-btn .menu-icon img {
+  height: 12vh;
+  width: 12vh;
+  transition: transform 0.3s ease-in-out;
+}
+
+.menu-open .menu-icon {
+  transform: rotate(180deg);
+}
+
+/* When menu is open, show cross icon */
+.menu-open .hamburger-btn .menubtn {
+  display: none;
+}
+
+.menu-open .hamburger-btn .removebtn {
+  display: block;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 65vw;
+  height: 100vh;
+  background: linear-gradient(90deg, #E9FEFF 0%, #FFFFFF 100%);
+  box-shadow: 0.2vh 0 0.5vh rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  padding: 3vh 5vw;
+  transition: left 0.8s ease-in-out;
+  z-index: 85000;
+  display: flex;
+}
+
+.mobile-menu.open {
+  left: 0;
+}
+
+.mobile-nav-link {
+  padding: 2vh 3vw;
+  text-decoration: none;
+  color: #333;
+  border-bottom: 0.1vh solid #eee;
+  font-size: 2vh;
+  transition: all 0.3s ease-in-out;
+  font-family: "Inter", sans-serif;
+}
+
+.mobile-nav-link.active {
+  color: #007bff;
+  font-weight: bold;
+}
+
+.mobile-auth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  padding: 2vh 0;
+}
+
+.mobile-sign-in-btn, .mobile-sign-up-btn {
+  padding: 1.5vh;
+  text-align: center;
+  border-radius: 0.5vh;
+  text-decoration: none;
+  font-size: 2vh;
+  transition: all 0.3s ease;
+  font-family: "Inter", sans-serif;
+}
+
+.mobile-sign-in-btn {
+  color: #007bff;
+  border: 0.1vh solid #007bff;
+}
+
+.mobile-sign-up-btn {
+  background: #007bff;
+  color: white;
+}
+.hamburger-btn {
+  display: none
 }
 
 /* Mobile Styles */
@@ -94,71 +197,22 @@
 
   .navbar-left {
     width: 40vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .hamburger-btn {
     display: block;
     width: 8vw;
     height: 8vw;
-  }
-
-  .mobile-menu {
-    display: flex;
-    flex-direction: column;
     position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100vw;
-    background: white;
-    padding: 2vh 5vw;
-    box-shadow: 0 0.2vh 0.4vh rgba(0,0,0,0.1);
+    right: 5vw;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
-  .mobile-nav-link {
-    padding: 2vh 3vw;
-    text-decoration: none;
-    color: #333;
-    border-bottom: 0.1vh solid #eee;
-    font-size: 2vh;
-  }
-
-  .mobile-nav-link.active {
-    color: #007bff;
-    font-weight: bold;
-  }
-
-  .mobile-auth-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 2vh;
-    padding: 2vh 0;
-  }
-
-  .mobile-sign-in-btn,
-  .mobile-sign-up-btn {
-    padding: 1.5vh;
-    text-align: center;
-    border-radius: 0.5vh;
-    text-decoration: none;
-    font-size: 2vh;
-  }
-
-  .mobile-sign-in-btn {
-    color: #007bff;
-    border: 0.1vh solid #007bff;
-  }
-
-  .mobile-sign-up-btn {
-    background: #007bff;
-    color: white;
-  }
-
-  .menubtn{
-height: 8vh;
-margin-top: -2vh;
-  }
-
-  .logo-nav{
-    height: 8vh;
+  .logo-nav {
+    height: 6vh;
   }
 }
