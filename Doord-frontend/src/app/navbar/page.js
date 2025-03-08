@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Logo from './../assets/Doord.svg';
 import Menu from './../assets/Menubtn.svg';
 import Remove from './../assets/remove.svg';
@@ -11,16 +12,39 @@ import './Navbar.css';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [userName, setUserName] = useState('');
   const pathname = usePathname();
   const buttonRef = useRef(null);
+  const router = useRouter();
 
   useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-  }, [isMenuOpen]);
+    const fetchUserName = async () => {
+      const userEmail = localStorage.getItem('userEmail'); // Get email from storage
+      if (!userEmail) return;
+  
+      try {
+        const response = await fetch('https://doord.onrender.com/allusers');
+        const users = await response.json();
+  
+        // Find user by email
+        const user = users.find(u => u.email === userEmail);
+        if (user) {
+          setUserName(user.name); // Store name in state
+          localStorage.setItem('userName', user.name); // Save name for persistence
+        }
+      } catch (err) {
+        console.error('Failed to fetch users:', err);
+      }
+    };
+  
+    fetchUserName();
+  }, []);
+
+  const handleSignOut = () => {
+    localStorage.removeItem("user"); // Remove user from storage
+    setUser(null);
+    router.push("/"); // Redirect to home after logout
+  };
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -51,14 +75,19 @@ const Navbar = () => {
       </div>
 
       <div className='navbar-right'>
-        {/* Desktop Auth Buttons */}
+        {/* Desktop Auth Section */}
         <div className='auth-buttons desktop-only'>
-          <Link href='/signin' className='sign-in-btn'>
-            Sign In
-          </Link>
-          <Link href='/signup' className='sign-up-btn'>
-            Sign Up
-          </Link>
+          {userName ? (
+            <>
+              <span className="hello-user">Hello, {userName}</span>
+              <button onClick={handleSignOut} className="sign-out-btn">Sign Out</button>
+            </>
+          ) : (
+            <>
+              <Link href='/signin' className='sign-in-btn'>Sign In</Link>
+              <Link href='/signup' className='sign-up-btn'>Sign Up</Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -87,21 +116,19 @@ const Navbar = () => {
             {link.name}
           </Link>
         ))}
+        
         <div className='mobile-auth-buttons'>
-          <Link 
-            href='/signin' 
-            className='mobile-sign-in-btn'
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Sign In
-          </Link>
-          <Link 
-            href='/signup' 
-            className='mobile-sign-up-btn'
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Sign Up
-          </Link>
+          {userName ? (
+            <>
+              <span className="hello-user">Hello, {userName} !</span>
+              <button onClick={handleSignOut} className="mobile-sign-out-btn">Sign Out</button>
+            </>
+          ) : (
+            <>
+              <Link href='/signin' className='mobile-sign-in-btn' onClick={() => setIsMenuOpen(false)}>Sign In</Link>
+              <Link href='/signup' className='mobile-sign-up-btn' onClick={() => setIsMenuOpen(false)}>Sign Up</Link>
+            </>
+          )}
         </div>
       </div>
     </div>

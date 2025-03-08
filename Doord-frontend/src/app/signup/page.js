@@ -80,8 +80,12 @@ export default function Signup() {
 
       const data = await response.json();
       if (response.ok) {
-        setMessage(data.message);
-        router.push('/'); // Redirect to home on success
+        setMessage("OTP Verified! Redirecting to Sign In...");
+        
+        // Delay for 2 seconds, then redirect to Sign In
+        setTimeout(() => {
+          router.push('/signin');
+        }, 2000);
       } else {
         setError(data.errors || 'OTP verification failed.');
       }
