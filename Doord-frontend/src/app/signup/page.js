@@ -1,9 +1,13 @@
 'use client';
-
+import Image from "next/image";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import './SignUp.css'
+import Google from './../assets/Google.png'
+import Facebook from './../assets/Facebook.png'
+import Apple from './../assets/Apple.png'
+
 
 export default function Signup() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -83,22 +87,26 @@ export default function Signup() {
         <div className='head2'>Let's get you started</div>
         </div>
           <form onSubmit={handleSubmit} className='inputs-form'>
-            <div>
-              <label>Name</label>
+            <div className='input-order'>
+              <label>Your Name</label>
               <input type="text" name="name" value={formData.name} onChange={handleChange} required />
             </div>
-            <div>
+            <div className='input-order'>
               <label>Email</label>
               <input type="email" name="email" value={formData.email} onChange={handleChange} required />
             </div>
-            <div>
+            <div className='input-order'>
               <label>Password</label>
               <input type="password" name="password" value={formData.password} onChange={handleChange} required />
             </div>
             <button type="submit">Get Started</button>
           </form>
-          <div className='oruse'> Or Use </div>
-          <div className='otherbtns'></div>
+          <div className='orusecont'><div className='oruse'> Or Use </div></div>
+          <div className='otherbtns'>
+  <Image src={Google} alt="Google" className="social-icon" width={40} height={40} />
+  <Image src={Apple} alt="Apple" className="social-icon" width={40} height={40} />
+  <Image src={Facebook} alt="Facebook" className="social-icon" width={40} height={40} />
+</div>
         </div>
       ) : (
         <div>
