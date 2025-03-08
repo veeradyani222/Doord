@@ -7,7 +7,6 @@ const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
 const fs = require('fs');
-const xlsx = require('xlsx');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const cloudinary = require('cloudinary').v2;
