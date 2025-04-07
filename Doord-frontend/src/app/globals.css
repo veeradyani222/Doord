@@ -2,298 +2,104 @@
 
 .hero-container {
     position: relative;
-    width:98vw;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 150vh;
-    overflow: hidden;
     background: linear-gradient(180deg, #E9FEFF 0%, #FFFFFF 100%);
-  }
-  
-  .hero-content {
+    overflow: hidden;
+    font-family: "Zen Kaku Gothic Antique", sans-serif;
+}
+
+.hero-content {
     text-align: center;
-    padding-top: 1vh;
-    position: relative;
-    z-index: 5;
-    font-family: "Zen Kaku Gothic Antique", sans-serif;
-  }
-  
-  .hero-content h1 {
-    font-size: 3.2vw;
+    z-index: 10;
+    background-color: #E9FEFF;
+
+}
+
+.hero-content h1 {
+    font-size: 3vw;
     font-weight: 900;
-    margin-bottom: 0vh;
     color: #1A1A1A;
-    font-family: "Zen Kaku Gothic Antique", sans-serif;
-  }
-  
-  .hero-content p {
-    font-size: 1vw;
+    font-family: "Zen Kaku Gothic Antique", serif;
+    margin: 0;
+}
+
+.hero-content p {
+    font-size: 1.2vw;
     font-weight: 700;
-    margin-top: 3vh;
     color: #3C3C3C;
-    font-family: "Zen Kaku Gothic Antique", sans-serif;
-  }
-  
-  .order-btn {
+    margin-top: 3vh;
+    font-family: "Zen Kaku Gothic Antique", serif;
+}
+
+.order-btn {
     background: #1177FF;
     color: white;
-    padding: 1.2vh 1vw;
+    padding: 1.2vh 1.5vw;
     border: none;
-    border-radius: 3vh;
+    border-radius: 50px;
     cursor: pointer;
     font-size: 1.2vw;
     font-weight: 500;
     margin-top: 2vh;
-    font-family: "Zen Kaku Gothic Antique", sans-serif;
-    text-align: center;
-  }
-  
-  .hero-graphics {
-    position: relative;
-    width: 100%;
-    height: 45vh;
-    margin-top: 20vh;
-    bottom: 10vh;
-  }
-  
-  /* Tools container - now BEHIND the polygons */
-  .tools-container {
+    font-family: "Zen Kaku Gothic Antique", serif;
+}
+
+.hero-graphics {
     position: absolute;
-    width: 100vw;
-    height: 60vh;
-    bottom: -4vh;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 5;
+}
+
+.hero-graphics img {
+    width: 100%;
+    height: auto;
+}
+
+.search-area {
+    position: absolute;
+    bottom: 12vh;
+    width: 100%;
     display: flex;
     justify-content: center;
-  }
-  
-  /* Individual tools positioning */
-  .hero-1 {
-    position: absolute;
-    left: 10vw;
-    bottom: 5vh;
-    transform: rotate(-10deg);
-    z-index: 1000
-  }
-  
-  .hero-2 {
-    position: absolute;
-    left: 25vw;
-    bottom: 8vh;
-    width: 8vw;
-    height: auto;
-    transform: scale(2) rotate(5.71deg) ;  /* Scale and rotate */
-    transform-origin: bottom center;  /* Makes scaling happen from bottom center */
-    z-index: 1000;
-  }
-  
-  .hero-3 {
-    position: absolute;
-    transform: translateX(-55%);
-    bottom: 4vh;
-    width: 30vw;
-    height: 30vw;
-    height: auto;
-    z-index: 10
-  }
-  
-  .hero-4 {
-    position: absolute;
-    right: 25vw;
-    bottom: 20vh;
-    width: 8vw;
-    transform: scale(2.5) rotate(-8.45deg);
-    height: auto;
-    z-index: 1000
-  }
-  
-  .hero-5 {
-    position: absolute;
-    right: 10vw;
-    bottom: 20vh;
-    width: 8vw;
-    transform: scale(2.5) rotate(-5deg);
-    height: auto;
-    z-index: 1000
-  }
-  
-  /* Polygons - now OVER the tools */
-  .polygon-left, .polygon-right {
-    position: absolute;
-    width: 42vw;
-    height: auto;
-    bottom: 0;
-    z-index: 100;  
-  }
-  
-  .polygon-left {
-    left: -2vw;
-  }
-  
-  .polygon-right {
-    right: -2vw;
-  }
-  
-  .vector {
-    position: absolute;
-    width: 98vw;
-    bottom: 0;
-    z-index: 100;
-    height: 94vh;
-  }
+    z-index: 10;
+}
 
-  .search-area{
-    margin-top: 60vh;
-  }
-
-  @media screen and (max-width : 500px) {
-
-    .hero-container {
-      position: relative;
-      width:98vw;
-      align-items: center;
-      justify-content: center;
-      height: 150vh;
-      overflow: hidden;
-      background: linear-gradient(180deg, #E9FEFF 0%, #FFFFFF 100%);
-    }
-    
-    .hero-content {
-      text-align: center;
-      padding-top: 1vw;
-      position: relative;
-      z-index: 5;
-      font-family: "Zen Kaku Gothic Antique", sans-serif;
-    }
-    
+@media screen and (max-width: 500px) {
     .hero-content h1 {
-      font-size: 3.2vh;
-      font-weight: 900;
-      margin-bottom: 0vh;
-      color: #1A1A1A;
-      font-family: "Zen Kaku Gothic Antique", sans-serif;
+        font-size: 3vh;
     }
     
     .hero-content p {
-      font-size: 2vh;
-      font-weight: 700;
-      margin-top: 3vw;
-      color: #3C3C3C;
-      font-family: "Zen Kaku Gothic Antique", sans-serif;
+        font-size: 2vh;
     }
-    
+
     .order-btn {
-      background: #1177FF;
-      color: white;
-      padding: 1.2vw 1vh;
-      border: none;
-      border-radius: 3vw;
-      cursor: pointer;
-      font-size: 2vh;
-      font-weight: 500;
-      margin-top: 2vw;
-      font-family: "Zen Kaku Gothic Antique", sans-serif;
-      text-align: center;
+        font-size: 2vh;
+        padding: 1vh 3vw;
+        border-radius: 3vw;
     }
-    
-    .hero-graphics {
-      position: relative;
-      width: 100%;
-      height: 45vw;
-      margin-top: 20vw;
-      bottom: 10vw;
-      font-size: 2vh;;
+
+    .search-area {
+        bottom: 8vh;
     }
-    
-    /* Tools container - now BEHIND the polygons */
-    .tools-container {
-      position: absolute;
-      width: 100vw;
-      height: 60vh;
-      bottom: -4vw;
-      display: flex;
-      justify-content: center;
+
+    .hero-container {
+        position: relative;
+        width:95vw;
+        height: 30vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(180deg, #E9FEFF 0%, #FFFFFF 100%);
+        overflow: hidden;
+        font-family: "Zen Kaku Gothic Antique", sans-serif;
     }
-    
-    /* Individual tools positioning */
-    .hero-1 {
-      position: absolute;
-      left: -15vw;
-      bottom: 5vh;
-      transform: rotate(-10deg);
-      z-index: 1000;
-      height: 13vh;
-    
-    }
-    
-    .hero-2 {
-      position: absolute;
-      left: 8vh;
-      bottom: 3vw;
-      width: 8vh;
-      height: auto;
-      transform: scale(2) rotate(5.71deg);
-      transform-origin: bottom center;
-      z-index: 1000;
-    }
-    
-    .hero-3 {
-      position: absolute;
-      transform: translateX(-55%);
-      bottom: 4vw;
-      width: 25vh;
-      height: 25vh;
-      height: auto;
-      z-index: 10;
-    }
-    
-    .hero-4 {
-      position: absolute;
-      right: 9vh;
-      bottom: 20vw;
-      width: 8vh;
-      transform: scale(2.5) rotate(-8.45deg);
-      height: auto;
-      z-index: 1000;
-    }
-    
-    .hero-5 {
-      position: absolute;
-      right: 1vh;
-      bottom: 17vw;
-      width: 7vh;
-      transform: scale(2.5) rotate(-5deg);
-      height: auto;
-      z-index: 1000;
-    }
-    
-    /* Polygons - now OVER the tools */
-    .polygon-left, .polygon-right {
-      position: absolute;
-      width: 20vh;
-      height: auto;
-      bottom: 0;
-      z-index: 100;  
-    }
-    
-    .polygon-left {
-      left: -2vw;
-    }
-    
-    .polygon-right {
-      right: -2vw;
-    }
-    
-    .vector {
-      position: absolute;
-      width: 98vw;
-      z-index: 113;
-      height: 44vw;
-    }
-  
-    .search-area{
-      margin-top: 10vh;
-    }
-  
-    
-  }
-  
+}
