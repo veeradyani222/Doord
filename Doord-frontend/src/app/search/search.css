@@ -1,8 +1,4 @@
 .search-section {
-  position: absolute;
-  top: 85vh;
-  left: 50%;
-  transform: translateX(-50%);
   z-index: 1001;
   width: 85vw;
   background: white;
@@ -83,8 +79,8 @@
       gap: 1vh;
       top: 50vh;
       padding: 2.5vw 2vw;
-      width: 90vw;
-      gap: 1vw;
+      width: 85vw;
+      gap: 0.5vw;
   }
 
   .search-section h2 {
@@ -103,7 +99,7 @@
         font-size: 1.8vw;
         width: 12vw;
         border-radius: 2vh;
-        padding: 1.8vw 2.5vw;
+        padding: 1.5vw 2.5vw;
   }
 
   .search-input-wrapper input {
