@@ -2,6 +2,7 @@ import Image from "next/image";
 import HomeGraphics from './assets/HomeGraphics.svg';
 import Search from './search/search';
 import Section2 from './section2/section2';
+import Services from "./Services/Services";
 
 export default function Home() {
   return (
@@ -22,6 +23,10 @@ export default function Home() {
 
       <div className="section2">
         <Section2 />
+      </div>
+
+      <div className="services">
+        <Services/>
       </div>
     </div>
   );
