@@ -3,6 +3,7 @@ import HomeGraphics from './assets/HomeGraphics.svg';
 import Search from './search/search';
 import Section2 from './section2/section2';
 import Services from "./Services/Services";
+import Footer from "./Footer/Footer";
 
 export default function Home() {
   return (
@@ -27,6 +28,10 @@ export default function Home() {
 
       <div className="services">
         <Services/>
+      </div>
+
+      <div className="footer">
+        <Footer/>
       </div>
     </div>
   );

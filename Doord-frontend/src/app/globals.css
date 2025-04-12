@@ -113,14 +113,15 @@
     .order-btn {
         background: #1177FF;
         color: white;
-        padding: 1.2vh 1.5vw;
+        padding: 1.2vh 2vw;
         border: none;
         border-radius: 50px;
         cursor: pointer;
-        font-size: 1.2vw;
+        font-size: 1.5vh;
         font-weight: 500;
-        margin-top: 2vh;
+        margin-top: 1vh;
         font-family: "Zen Kaku Gothic Antique", serif;
+        margin-bottom: 2vh;
     }
     
     /* Image section */

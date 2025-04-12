@@ -74,13 +74,14 @@
 
 @media (max-width: 500px) {
   .search-section {
-      flex-direction: row;
-      align-items: center;
-      gap: 1vh;
-      top: 50vh;
-      padding: 2.5vw 2vw;
-      width: 85vw;
-      gap: 0.5vw;
+    flex-direction: row;
+    align-items: center;
+    gap: 1vh;
+    top: 50vh;
+    padding: 2.5vw 2vh;
+    width: 90vw;
+    gap: 0.5vw;
+    margin-top: -2vh;
   }
 
   .search-section h2 {
