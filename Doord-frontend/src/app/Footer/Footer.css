@@ -114,7 +114,8 @@
   /* Mobile */
   @media (max-width: 480px) {
     .footer-logo h2 {
-      font-size: 6vw;
+      font-size: 4vh;
+      color: white;
     }
   
     .footer-column h4 {
@@ -132,6 +133,17 @@
       align-items: center;
       text-align: center;
     }
+    .footer-column-parent {
+      display: flex;
+      flex-direction: row;
+      width: 80vw;
+      justify-content: center;
+      align-items: center;
+      font-family: "Inter", serif;
+      margin: 0 auto;
+      font-family: 2vw;
+      gap: 4.5vh;
+  }
   
     .footer-links {
       flex-direction: column;
@@ -141,9 +153,9 @@
     }
   
     .footer-image img {
-      width: 80%;
-      max-width: 250px;
-      margin: 4vh auto;
-    }
+      width: 100%;
+   
+  }
+    
   }
   
