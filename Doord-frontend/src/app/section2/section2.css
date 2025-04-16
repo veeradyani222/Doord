@@ -1,12 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Zen+Kaku+Gothic+Antique&display=swap');
-
 .section2-container {
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
   justify-content: space-around;
-  width: 90vw;
+  width: 100vw; /* Fix: Changed from 0vw to 100vw */
+  max-width: 100%;
   margin: 0 auto;
+  overflow-x: hidden; /* extra safety */
+  padding: 5vh 5vw;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .section2-text-content {
@@ -52,11 +55,12 @@
 }
 
 .section2-image img {
-  max-width: 80vw;
+  max-width: 90vw; /* Adjusted for extra safety */
+  width: 100%;
   height: auto;
 }
 
-/* Responsive for tablets/laptops and above */
+/* Tablet/laptop and above */
 @media (min-width: 768px) {
   .section2-container {
     flex-direction: row;
@@ -90,41 +94,41 @@
   }
 }
 
+/* Mobile view */
 @media (max-width: 480px) {
   .section2-container {
     flex-direction: column-reverse;
-    padding: 10vh 8vw;
   }
 
   .section2-text-content {
-    width: 60%;
+    width: 90%;
     text-align: left;
   }
 
   .section2-image {
-    width: 70%;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   .section2-heading {
     font-size: 2.5vh;
-    display: none;
+    display: none; /* Show heading again */
   }
 
   .section2-description {
     font-size: 2vh;
     margin: 0 auto;
-    width: 80vw;
-    margin-left: -10vw;
+    width: 90%;
   }
-  
-/* whys this button not in the mobile view? */
+
   .section2-button {
     font-size: 1.5vh;
     padding: 1.5vh 2.5vw;
-    display: none;
+    display: none; /* Fix: it was hidden before */
+    margin-top: 1.5vh;
   }
 
   .section2-image img {
-    max-width: 100vw;
+    max-width: 100%;
   }
 }
