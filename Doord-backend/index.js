@@ -237,6 +237,64 @@ Avoid generic statements — personalize based on the role and my experience.
                     to: application.founderEmail
                 };
                 break;
+                // Add this to your backend - Company email action
+// Modify your existing PATCH route to handle company-email action:
+
+// In your existing PATCH route, add this case in the switch statement:
+case 'company-email':
+    // You can customize this prompt for company-specific emails
+    const companyEmailPrompt = `Compose a highly professional, concise, yet compelling cold email to the HR team or hiring manager at ${application.companyName} for the role of ${application.jobTitle}.
+
+Context:
+Job Description: ${application.jobDescription}.
+
+About Me:
+I am Veer Adyani — a passionate and detail-focused full-stack developer from Indore, India, currently pursuing my B.Tech in Computer Science (2023-2027) at Chameli Devi Group of Institutions. I specialize in the MERN stack, crafting responsive, high-performance web applications with a strong focus on UI/UX, backend architecture, database optimization, security, and scalability. I handle projects end-to-end, from design to deployment, blending creativity with robust technical implementation.
+In terms of experience, I’ve worked on real-world freelance projects:
+•	At W EVER CLASSES (Sep 2024 – Nov 2024, Hybrid/Remote from Indore), I worked as a Freelance Full-Stack Developer where I built a comprehensive e-commerce platform from scratch using the MERN stack. I integrated features like cart, wishlist, reviews, admin panel, secure payments, and optimized the database for large-scale performance. I independently handled the UI/UX, backend, APIs, and deployment — delivering a feature-rich and scalable platform.
+•	Since April 2025, I’ve been a Freelance Backend Developer for DOORD (Canada). I developed the core REST APIs for user authentication, order creation, and service filtering. I collaborated with frontend and chat integration teams to build real-time, seamless experiences. I designed MongoDB schemas optimized for user roles, services, and live order tracking, ensuring clean, modular, and scalable code.
+I’ve also created impactful projects like:
+•	W EVER CLASSES Website: An e-commerce site for CA courses with dashboards, admin management, and secure payments.
+🌐 Visit Site
+•	Quiz.v: A dynamic quiz platform for topic-based and personality quizzes with instant feedback.
+🌐 Play Now
+•	nestMe: A flatmate matching app with lifestyle-based profile filtering using MERN + Next.js.
+🔗 GitHub Repo
+•	Well.io: A hackathon-built health tracking platform with AI insights and real-time doctor-patient interaction.
+🔗 GitHub Repo
+•	VisionParse: An AI-powered document parser that extracts data from structured formats using CV and ML.
+🔗 GitHub Repo
+My problem-solving abilities shined at the vCode Hackathon, where I secured First Runner-Up with Safeloop, a web application for community safety and incident reporting — built within tight hackathon deadlines.
+When I’m not coding, I’m journaling, engaging in public speaking, playing table tennis or badminton, and connecting with people to learn and grow. I’m fluent in English and Hindi, driven by curiosity, innovation, and a desire to build tech that creates real impact.
+📂 My GitHub: github.com/veeradyani222
+This is me — I am Veer Adyani: always building, always learning, always growing.
+
+
+Email Requirements:
+- Professional subject line for ${application.jobTitle} application
+- Address to HR/Hiring team at ${application.companyName}
+- Highlight relevant skills and projects
+- Express enthusiasm for the company and role
+- Professional yet warm tone
+- Under 4 concise paragraphs
+- Include line breaks for readability
+
+Target: HR team or hiring manager at ${application.companyName}`;
+
+    const companyEmailContent = await generateWithGemini(companyEmailPrompt);
+    const [companySubjectLine, ...companyBodyLines] = companyEmailContent.split('\n');
+    const companySubject = companySubjectLine.replace('Subject:', '').trim();
+    const companyBody = companyBodyLines.join('\n').trim();
+    
+    // For now, we'll just return the content. You can add actual email sending later
+    result = {
+        success: true,
+        message: 'Company email generated successfully',
+        content: companyBody,
+        subject: companySubject,
+        to: 'hr@' + application.companyName.toLowerCase().replace(/\s+/g, '') + '.com' // Placeholder
+    };
+    break;
 
             case 'founder-linkedin':
                 const founderPrompt = `Create a concise, professional yet friendly LinkedIn connection request message (strictly under 300 characters) for ${application.founderName}, founder of ${application.companyName}. This is in regard to my application for the ${application.jobTitle} position.
