@@ -1,798 +1,232 @@
 const port = process.env.PORT || 4000;
 const express = require("express");
-const app = express();
-const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
-const multer = require("multer");
-const path = require("path");
-const cors = require("cors");
-const fs = require('fs');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
-const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
+const app = express();
 app.use(bodyParser.json());
 app.use(express.json({ limit: '10mb' }));
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
-});
 
-
-
-// Middleware for parsing URL-encoded bodies with a size limit
-
-app.use(express.urlencoded({ limit: '10mb', extended: true }));
-
-
-
-app.use(cors());
-
-// MongoDB connection
-mongoose.connect('mongodb+srv://veeradyani2:S%40nju_143@cluster0.uafyz.mongodb.net/Doord?retryWrites=true&w=majority');
-
-
-app.get("/", (req, res) => {
-    res.send("Express app is running");
-});
-
-// Multer configuration for image upload
-const uploadPath = path.join('/tmp', 'upload', 'images');
-
-// Ensure the `/tmp/upload/images` directory exists
-if (!fs.existsSync(uploadPath)) {
-    fs.mkdirSync(uploadPath, { recursive: true }); // Create the directory if it doesn't exist
+// --- MongoDB Connection ---
+async function connectDB() {
+    if (mongoose.connection.readyState === 0) {
+        await mongoose.connect(process.env.MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+        console.log('Connected to MongoDB');
+    }
 }
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, uploadPath); // Use the writable `/tmp` directory
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`;
-        cb(null, uniqueSuffix); // Generate a unique filename
-    },
-});
-
-const upload = multer({ storage: storage });
-
-
-app.use('/images', express.static(path.join(__dirname, 'upload/images')));
-
-
-// Endpoint for uploading product images
-app.post("/upload", upload.single('product'), (req, res) => {
-    cloudinary.uploader.upload(req.file.path, (error, result) => {
-        if (error) {
-            return res.status(500).json({ success: 0, message: "Image upload failed", error });
-        }
-
-        res.json({
-            success: 1,
-            image_url: result.secure_url // Use the secure URL provided by Cloudinary
-        });
-    });
-});
-
-
-// For faculty
-
-app.post("/upload-faculty", upload.single('image'), (req, res) => {
-    const path = req.file.path; // Get the path of the uploaded file (from multer)
-
-    // Upload the image to Cloudinary
-    cloudinary.uploader.upload(path, { folder: "faculty_images" }, (error, result) => {
-        if (error) {
-            console.error("Error uploading to Cloudinary:", error);
-            return res.status(500).json({ success: 0, message: "Image upload failed" });
-        }
-
-        // Respond with the Cloudinary image URL
-        res.json({
-            success: 1,
-            image_url: result.secure_url // This is the persistent Cloudinary URL
-        });
-    });
-});
-
-
-// Simplified User Schema
-const Users = mongoose.model('Users', new mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    date: { type: Date, default: Date.now }
-}));
-
-const pendingVerifications = {}; // Store pending email verifications
-
-// Simplified signup route
-app.post('/signup', async (req, res) => {
-    try {
-        const { name, email, password } = req.body;
-
-        // Validate input
-        if (!name || !email || !password) {
-            return res.status(400).json({ success: false, errors: "All fields are required." });
-        }
-
-        // Check if email already exists
-        const existingUser = await Users.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({
-                success: false,
-                errors: "Email is already registered."
-            });
-        }
-
-        // Generate verification code
-        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-
-        // Store pending verification
-        pendingVerifications[email] = {
-            name,
-            email,
-            password,
-            verificationCode,
-            createdAt: Date.now()
-        };
-
-        // Send verification email
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-        });
-
-        await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Verify Your Email',
-            html: `
-                <h2>Email Verification</h2>
-                <p>Hi ${name},</p>
-                <p>Your verification code is: <strong>${verificationCode}</strong></p>
-                <p>This code will expire in 15 minutes.</p>
-            `
-        });
-
-        res.json({ success: true, message: "Please verify your email address." });
-
-    } catch (error) {
-        console.error("Error during signup:", error);
-        res.status(500).json({ error: "Signup failed." });
-    }
-});
-
-// Verify email route
-app.post('/verify-email', async (req, res) => {
-    try {
-        const { email, verificationCode } = req.body;
-        const pendingUser = pendingVerifications[email];
-
-        if (!pendingUser) {
-            return res.status(400).json({ success: false, errors: "Verification expired or invalid email." });
-        }
-
-        if (pendingUser.verificationCode !== verificationCode) {
-            return res.status(400).json({ success: false, errors: "Invalid verification code." });
-        }
-
-        // Create and save verified user
-        const user = new Users({
-            name: pendingUser.name,
-            email: pendingUser.email,
-            password: pendingUser.password
-        });
-
-        await user.save();
-        delete pendingVerifications[email];
-
-        res.json({ success: true, message: "Email verified successfully." });
-    } catch (error) {
-        console.error("Error during verification:", error);
-        res.status(500).json({ error: "Verification failed." });
-    }
-});
-
-// Login route
-app.post('/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const user = await Users.findOne({ email });
-
-        if (!user) {
-            return res.json({ success: false, errors: "Email not found" });
-        }
-
-        if (password !== user.password) {
-            return res.json({ success: false, errors: "Incorrect password" });
-        }
-
-        const token = jwt.sign({ user: { id: user.id } }, 'secret_ecom', { expiresIn: '730h' });
-        res.json({ success: true, token });
-
-    } catch (error) {
-        console.error("Login error:", error);
-        res.status(500).json({ success: false, errors: "Login failed" });
-    }
-});
-
-const fetchUser = async (req, res, next) => {
-    try {
-        // Get token from header
-        const token = req.header('auth-token');
-        if (!token) {
-            return res.status(401).json({ success: false, errors: "Please authenticate using a valid token" });
-        }
-
-        // Verify token
-        const decoded = jwt.verify(token, 'secret_ecom');
-        
-        // Get user from database
-        const user = await Users.findById(decoded.user.id).select('-password');
-        if (!user) {
-            return res.status(404).json({ success: false, errors: "User not found" });
-        }
-
-        // Add user data to request
-        req.user = user;
-        next();
-
-    } catch (error) {
-        console.error("Authentication error:", error);
-        res.status(401).json({ success: false, errors: "Please authenticate using a valid token" });
-    }
-};
-
-// Forgot password route
-app.post("/forgot-password", async (req, res) => {
-    try {
-        const { email } = req.body;
-        const user = await Users.findOne({ email });
-
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        // Generate OTP
-        const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
-        const resetToken = jwt.sign({ userId: user._id }, "secret_ecom", { expiresIn: "15m" });
-
-        // Store OTP temporarily
-        pendingVerifications[email] = { resetCode, resetToken, createdAt: Date.now() };
-
-        // Send OTP via Email
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-        });
-
-        await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: "Password Reset Code",
-            html: `<h2>Password Reset</h2><p>Hi ${user.name},</p><p>Your OTP is: <strong>${resetCode}</strong></p><p>This code expires in 15 minutes.</p>`,
-        });
-
-        res.json({ success: true, message: "OTP sent to email", resetToken });
-
-    } catch (error) {
-        console.error("Forgot Password Error:", error);
-        res.status(500).json({ message: "Error sending OTP" });
-    }
-});
-
-// ⬇️ 2️⃣ Verify OTP (New Route)
-app.post("/verify-forgot-otp", async (req, res) => {
-    try {
-        const { resetToken, resetCode } = req.body;
-        const decoded = jwt.verify(resetToken, "secret_ecom");
-        const user = await Users.findById(decoded.userId);
-
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        // Check if OTP matches
-        const pendingReset = pendingVerifications[user.email];
-        if (!pendingReset || pendingReset.resetCode !== resetCode) {
-            return res.status(400).json({ message: "Invalid or expired OTP" });
-        }
-
-        res.json({ success: true, message: "OTP verified!" });
-
-    } catch (error) {
-        console.error("OTP Verification Error:", error);
-        res.status(400).json({ message: "Invalid or expired OTP" });
-    }
-});
-
-app.post("/reset-password", async (req, res) => {
-    try {
-        const { resetToken, newPassword } = req.body;
-
-        if (!resetToken || !newPassword) {
-            return res.status(400).json({ message: "Missing required fields" });
-        }
-
-        // Verify reset token
-        const decoded = jwt.verify(resetToken, "secret_ecom");
-        const user = await Users.findById(decoded.userId);
-
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        // Ensure OTP was verified before resetting password
-        if (!pendingVerifications[user.email]) {
-            return res.status(400).json({ message: "OTP verification required" });
-        }
-
-        // Update password (without hashing)
-        user.password = newPassword;
-        await user.save();
-
-        // Clean up verification record
-        delete pendingVerifications[user.email];
-
-        res.json({ success: true, message: "Password reset successful!" });
-
-    } catch (error) {
-        console.error("Reset Password Error:", error);
-        res.status(400).json({ message: "Invalid or expired token" });
-    }
-});
-
-app.get('/allusers', async (req, res) => {
-    try {
-        let users = await Users.find({}).sort({ date: -1 });
-        res.json(users);
-    } catch (error) {
-        console.error("Error fetching users:", error);
-        res.status(500).json({ error: "Failed to fetch users" });
-    }
-});
-
-// ... existing code ...
-
-// Merchant Schema
-const Merchants = mongoose.model('Merchants', new mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    address: { type: String, required: true },
-    services: [{ type: String }], // Array of services
-    images: [{ type: String }], // Array of image URLs
-    description: { type: String },
-    phone: { type: String, required: true },
-    isVerified: { type: Boolean, default: false },
-    date: { type: Date, default: Date.now }
-}));
-
-const pendingMerchantVerifications = {}; // Store pending merchant email verifications
-
-// Merchant signup route
-app.post('/merchant/signup', async (req, res) => {
-    try {
-        const { name, email, password, address, services, phone, description } = req.body;
-
-        // Validate input
-        if (!name || !email || !password || !address || !phone) {
-            return res.status(400).json({ success: false, errors: "Required fields missing." });
-        }
-
-        // Check if email already exists
-        const existingMerchant = await Merchants.findOne({ email });
-        if (existingMerchant) {
-            return res.status(400).json({
-                success: false,
-                errors: "Email is already registered."
-            });
-        }
-
-        // Generate verification code
-        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-
-        // Store pending verification
-        pendingMerchantVerifications[email] = {
-            name,
-            email,
-            password,
-            address,
-            services: services || [],
-            phone,
-            description: description || '',
-            verificationCode,
-            createdAt: Date.now()
-        };
-
-        // Send verification email
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-        });
-
-        await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Verify Your Merchant Account',
-            html: `
-                <h2>Merchant Email Verification</h2>
-                <p>Hi ${name},</p>
-                <p>Your verification code is: <strong>${verificationCode}</strong></p>
-                <p>This code will expire in 15 minutes.</p>
-            `
-        });
-
-        res.json({ success: true, message: "Please verify your email address." });
-
-    } catch (error) {
-        console.error("Error during merchant signup:", error);
-        res.status(500).json({ error: "Signup failed." });
-    }
-});
-
-// Verify merchant email route
-app.post('/merchant/verify-email', async (req, res) => {
-    try {
-        const { email, verificationCode } = req.body;
-        const pendingMerchant = pendingMerchantVerifications[email];
-
-        if (!pendingMerchant) {
-            return res.status(400).json({ success: false, errors: "Verification expired or invalid email." });
-        }
-
-        if (pendingMerchant.verificationCode !== verificationCode) {
-            return res.status(400).json({ success: false, errors: "Invalid verification code." });
-        }
-
-        // Create and save verified merchant
-        const merchant = new Merchants({
-            name: pendingMerchant.name,
-            email: pendingMerchant.email,
-            password: pendingMerchant.password,
-            address: pendingMerchant.address,
-            services: pendingMerchant.services,
-            phone: pendingMerchant.phone,
-            description: pendingMerchant.description,
-            isVerified: true
-        });
-
-        await merchant.save();
-        delete pendingMerchantVerifications[email];
-
-        // Generate token for automatic login after verification
-        const token = jwt.sign({ merchant: { id: merchant.id } }, 'secret_ecom', { expiresIn: '730h' });
-
-        res.json({ 
-            success: true, 
-            message: "Email verified successfully.",
-            token,
-            merchant: {
-                id: merchant.id,
-                name: merchant.name,
-                email: merchant.email
-            }
-        });
-    } catch (error) {
-        console.error("Error during merchant verification:", error);
-        res.status(500).json({ error: "Verification failed." });
-    }
-});
-
-// Merchant login route
-app.post('/merchant/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const merchant = await Merchants.findOne({ email });
-
-        if (!merchant) {
-            return res.json({ success: false, errors: "Email not found" });
-        }
-
-        if (password !== merchant.password) {
-            return res.json({ success: false, errors: "Incorrect password" });
-        }
-
-        const token = jwt.sign({ merchant: { id: merchant.id } }, 'secret_ecom', { expiresIn: '730h' });
-        res.json({ 
-            success: true, 
-            token,
-            merchant: {
-                id: merchant.id,
-                name: merchant.name,
-                email: merchant.email
-            }
-        });
-
-    } catch (error) {
-        console.error("Merchant login error:", error);
-        res.status(500).json({ success: false, errors: "Login failed" });
-    }
-});
-
-// Middleware for merchant authentication
-const fetchMerchant = async (req, res, next) => {
-    try {
-        const token = req.header('auth-token');
-        if (!token) {
-            return res.status(401).json({ success: false, errors: "Please authenticate using a valid token" });
-        }
-
-        const decoded = jwt.verify(token, 'secret_ecom');
-        const merchant = await Merchants.findById(decoded.merchant.id).select('-password');
-        
-        if (!merchant) {
-            return res.status(404).json({ success: false, errors: "Merchant not found" });
-        }
-
-        req.merchant = merchant;
-        next();
-
-    } catch (error) {
-        console.error("Authentication error:", error);
-        res.status(401).json({ success: false, errors: "Please authenticate using a valid token" });
-    }
-};
-
-// Get merchant profile
-app.get('/merchant/profile', fetchMerchant, async (req, res) => {
-    try {
-        res.json({
-            success: true,
-            merchant: req.merchant
-        });
-    } catch (error) {
-        console.error("Error fetching merchant profile:", error);
-        res.status(500).json({ error: "Failed to fetch merchant profile" });
-    }
-});
-
-// Update merchant profile
-app.put('/merchant/update-profile', fetchMerchant, async (req, res) => {
-    try {
-        const { name, address, services, phone, description } = req.body;
-        const merchant = await Merchants.findById(req.merchant.id);
-
-        merchant.name = name || merchant.name;
-        merchant.address = address || merchant.address;
-        merchant.services = services || merchant.services;
-        merchant.phone = phone || merchant.phone;
-        merchant.description = description || merchant.description;
-
-        await merchant.save();
-
-        res.json({ success: true, message: 'Profile updated successfully', merchant });
-    } catch (error) {
-        console.error("Error updating merchant profile:", error);
-        res.status(500).json({ error: "Failed to update profile" });
-    }
-});
-
-// ... existing code ...
-
-
+// --- Schema ---
 const JobApplicationSchema = new mongoose.Schema({
-  userId: { type: String, required: true },
-  companyName: { type: String, required: true },
-  jobTitle: { type: String, required: true },
-  jobDescription: { type: String, required: true },
-  founderName: { type: String, required: true },
-  founderEmail: { type: String, required: true },
-  dateApplied: { type: Date, default: Date.now },
-  founderLinkedIn: { type: String },
-  companyLinkedIn: { type: String },
-  status: { 
-    type: String, 
-    enum: ['Applied', 'Interviewing', 'Offer', 'Rejected', 'Follow-up Pending', 'Awaiting Response'],
-    default: 'Applied'
-  }
+    userId: { type: String, required: true },
+    companyName: { type: String, required: true },
+    jobTitle: { type: String, required: true },
+    jobDescription: { type: String, required: true },
+    founderName: { type: String, required: true },
+    founderEmail: { type: String, required: true },
+    dateApplied: { type: Date, default: Date.now },
+    founderLinkedIn: { type: String },
+    companyLinkedIn: { type: String },
+    status: {
+        type: String,
+        enum: ['Applied', 'Interviewing', 'Offer', 'Rejected', 'Follow-up Pending', 'Awaiting Response'],
+        default: 'Applied'
+    }
 }, { timestamps: true });
 
 const JobApplication = mongoose.models.JobApplication || mongoose.model('JobApplication', JobApplicationSchema);
 
-// Configure Nodemailer transporter
+// --- Nodemailer ---
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
 });
 
-// Helper function to call Gemini API
+// --- Gemini API Call ---
 async function generateWithGemini(prompt) {
-  const API_KEY = process.env.GEMINI_API_KEY;
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
-  
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      contents: [{
-        parts: [{
-          text: prompt
-        }]
-      }]
-    })
-  });
+    const API_KEY = process.env.GEMINI_API_KEY;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
 
-  const data = await response.json();
-  return data.candidates[0].content.parts[0].text;
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }]
+        })
+    });
+
+    const data = await response.json();
+    return data.candidates[0].content.parts[0].text;
 }
 
-// Helper function to send email
+// --- Email sender ---
 async function sendEmailViaNodemailer(to, subject, html) {
-  try {
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to,
-      subject,
-      html
-    };
-
-    await transporter.sendMail(mailOptions);
-    return true;
-  } catch (error) {
-    console.error('Error sending email:', error);
-    return false;
-  }
-}
-
-// API Routes
-export async function POST(request) {
-  try {
-    await connectDB();
-    const { userId, ...applicationData } = await request.json();
-
-    const newApplication = new JobApplication({
-      ...applicationData,
-      userId
-    });
-
-    await newApplication.save();
-
-    return NextResponse.json({
-      success: true,
-      application: newApplication
-    });
-
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error.message
-    }, { status: 500 });
-  }
-}
-
-// ... [Keep all your other existing routes GET, PUT, DELETE] ...
-
-// Updated PATCH route for email sending
-export async function PATCH(request) {
-  try {
-    await connectDB();
-    const { action, applicationId } = await request.json();
-    const application = await JobApplication.findById(applicationId);
-
-    if (!application) {
-      return NextResponse.json({
-        success: false,
-        error: 'Application not found'
-      }, { status: 404 });
+    try {
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to,
+            subject,
+            html
+        };
+        await transporter.sendMail(mailOptions);
+        return true;
+    } catch (error) {
+        console.error('Error sending email:', error);
+        return false;
     }
+}
 
-    let result;
+// --- ROUTES ---
 
-    switch (action) {
-      case 'send-email':
-        // Generate email content with Gemini
-        const emailPrompt = `Compose a professional email to ${application.founderName} at ${application.companyName} regarding the ${application.jobTitle} position. 
-        Job description: ${application.jobDescription}.
-        Keep it concise (3-4 paragraphs max), polite, and express continued interest. Include a professional subject line.`;
-        
-        const emailContent = await generateWithGemini(emailPrompt);
-        
-        // Extract subject and body from generated content
-        const subject = emailContent.split('\n')[0].replace('Subject:', '').trim();
-        const body = emailContent.split('\n').slice(1).join('\n').trim();
-        
-        // Send the email using Nodemailer
-        const emailSent = await sendEmailViaNodemailer(
-          application.founderEmail,
-          subject,
-          body.replace(/\n/g, '<br>')
-        );
-        
-        if (!emailSent) {
-          throw new Error('Failed to send email');
-        }
-        
-        result = {
-          success: true,
-          message: 'Email sent successfully',
-          to: application.founderEmail
-        };
-        break;
+// CREATE a new job application
+app.post('/applications', async (req, res) => {
+    try {
+        await connectDB();
+        const { userId, ...applicationData } = req.body;
 
-      case 'founder-linkedin':
-        const founderPrompt = `Create a LinkedIn connection request message for ${application.founderName} at ${application.companyName} regarding the ${application.jobTitle} position.
-        Job description: ${application.jobDescription}.
-        Keep it professional but friendly, under 300 characters.`;
-        
-        const founderMessage = await generateWithGemini(founderPrompt);
-        
-        result = {
-          success: true,
-          message: 'Founder message generated',
-          content: founderMessage
-        };
-        break;
-
-      case 'company-linkedin':
-        const companyPrompt = `Create a LinkedIn message for ${application.companyName} regarding the ${application.jobTitle} position.
-        Job description: ${application.jobDescription}.
-        Keep it professional but enthusiastic, under 300 characters.`;
-        
-        const companyMessage = await generateWithGemini(companyPrompt);
-        
-        result = {
-          success: true,
-          message: 'Company message generated',
-          content: companyMessage
-        };
-        break;
-
-      case 'follow-up':
-        const followUpPrompt = `Create a follow-up message for ${application.founderName} at ${application.companyName} regarding the ${application.jobTitle} position.
-        Original application date: ${application.dateApplied}.
-        Keep it polite and professional, expressing continued interest.`;
-        
-        const followUpMessage = await generateWithGemini(followUpPrompt);
-        
-        // Update status in database
-        await JobApplication.findByIdAndUpdate(applicationId, {
-          status: 'Follow-up Pending'
+        const newApplication = new JobApplication({
+            ...applicationData,
+            userId
         });
-        
-        result = {
-          success: true,
-          message: 'Follow-up message generated',
-          content: followUpMessage,
-          statusUpdated: true
-        };
-        break;
 
-      default:
-        return NextResponse.json({
-          success: false,
-          error: 'Invalid action'
-        }, { status: 400 });
+        await newApplication.save();
+        res.json({ success: true, application: newApplication });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
     }
+});
 
-    return NextResponse.json(result);
+// GET all job applications
+app.get('/applications', async (req, res) => {
+    try {
+        await connectDB();
+        const applications = await JobApplication.find();
+        res.json({ success: true, applications });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
 
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error.message
-    }, { status: 500 });
-  }
-}
+// PATCH - perform actions like send-email, founder-linkedin, etc.
+app.patch('/applications/:id', async (req, res) => {
+    try {
+        await connectDB();
+        const { action } = req.body;
+        const applicationId = req.params.id;
+        const application = await JobApplication.findById(applicationId);
 
+        if (!application) return res.status(404).json({ success: false, error: 'Application not found' });
+
+        let result;
+
+        switch (action) {
+            case 'send-email':
+                const emailPrompt = `Compose a professional email to ${application.founderName} at ${application.companyName} regarding the ${application.jobTitle} position. 
+Job description: ${application.jobDescription}. Keep it concise, polite, and express continued interest. Include a professional subject line.`;
+
+                const emailContent = await generateWithGemini(emailPrompt);
+                const [subjectLine, ...bodyLines] = emailContent.split('\n');
+                const subject = subjectLine.replace('Subject:', '').trim();
+                const body = bodyLines.join('\n').trim();
+
+                const emailSent = await sendEmailViaNodemailer(
+                    application.founderEmail,
+                    subject,
+                    body.replace(/\n/g, '<br>')
+                );
+
+                if (!emailSent) throw new Error('Failed to send email');
+
+                result = {
+                    success: true,
+                    message: 'Email sent successfully',
+                    to: application.founderEmail
+                };
+                break;
+
+            case 'founder-linkedin':
+                const founderPrompt = `Create a LinkedIn connection request message for ${application.founderName} at ${application.companyName} regarding the ${application.jobTitle} position.
+Job description: ${application.jobDescription}.
+Keep it professional but friendly, under 300 characters.`;
+
+                const founderMessage = await generateWithGemini(founderPrompt);
+
+                result = {
+                    success: true,
+                    message: 'Founder LinkedIn message generated',
+                    content: founderMessage
+                };
+                break;
+
+            case 'company-linkedin':
+                const companyPrompt = `Create a LinkedIn message for ${application.companyName} regarding the ${application.jobTitle} position.
+Job description: ${application.jobDescription}.
+Keep it professional but enthusiastic, under 300 characters.`;
+
+                const companyMessage = await generateWithGemini(companyPrompt);
+
+                result = {
+                    success: true,
+                    message: 'Company LinkedIn message generated',
+                    content: companyMessage
+                };
+                break;
+
+            case 'follow-up':
+                const followUpPrompt = `Create a follow-up message for ${application.founderName} at ${application.companyName} regarding the ${application.jobTitle} position.
+Original application date: ${application.dateApplied}.
+Keep it polite and professional, expressing continued interest.`;
+
+                const followUpMessage = await generateWithGemini(followUpPrompt);
+
+                await JobApplication.findByIdAndUpdate(applicationId, {
+                    status: 'Follow-up Pending'
+                });
+
+                result = {
+                    success: true,
+                    message: 'Follow-up message generated',
+                    content: followUpMessage,
+                    statusUpdated: true
+                };
+                break;
+
+            default:
+                return res.status(400).json({ success: false, error: 'Invalid action' });
+        }
+
+        res.json(result);
+
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// DELETE an application
+app.delete('/applications/:id', async (req, res) => {
+    try {
+        await connectDB();
+        const applicationId = req.params.id;
+        await JobApplication.findByIdAndDelete(applicationId);
+        res.json({ success: true, message: 'Application deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// --- Start Server ---
 app.listen(port, (error) => {
     if (!error) {
-        console.log("Server is running on " + port);
+        console.log(`Server is running on port ${port}`);
     } else {
-        console.log("Server is not running, error - " + error);
+        console.error('Server failed to start:', error);
     }
 });
