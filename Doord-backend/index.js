@@ -12,8 +12,6 @@ const bodyParser = require('body-parser');
 const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 
-
-
 app.use(bodyParser.json());
 app.use(express.json({ limit: '10mb' }));
 cloudinary.config({
