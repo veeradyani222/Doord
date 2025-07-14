@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 require('dotenv').config();
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const fetch = require('node-fetch');
 const cors = require('cors');
 const app = express();
 app.use(bodyParser.json());
@@ -81,7 +81,7 @@ async function sendEmailViaNodemailer(to, subject, html) {
 // CREATE a new job application
 app.post('/applications', async (req, res) => {
     try {
-        await connectDB();
+      
         const { userId, ...applicationData } = req.body;
 
         const newApplication = new JobApplication({
@@ -99,7 +99,7 @@ app.post('/applications', async (req, res) => {
 // GET all job applications
 app.get('/applications', async (req, res) => {
     try {
-        await connectDB();
+       
         const applications = await JobApplication.find();
         res.json({ success: true, applications });
     } catch (error) {
@@ -110,7 +110,7 @@ app.get('/applications', async (req, res) => {
 // PATCH - perform actions like send-email, founder-linkedin, etc.
 app.patch('/applications/:id', async (req, res) => {
     try {
-        await connectDB();
+        
         const { action } = req.body;
         const applicationId = req.params.id;
         const application = await JobApplication.findById(applicationId);
@@ -360,7 +360,7 @@ This is me — I am Veer Adyani: always building, always learning, always growin
 // DELETE an application
 app.delete('/applications/:id', async (req, res) => {
     try {
-        await connectDB();
+        
         const applicationId = req.params.id;
         await JobApplication.findByIdAndDelete(applicationId);
         res.json({ success: true, message: 'Application deleted successfully' });
