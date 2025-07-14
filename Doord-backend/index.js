@@ -47,17 +47,30 @@ async function generateWithGemini(prompt) {
     const API_KEY = process.env.GEMINI_API_KEY;
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
 
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }]
-        })
-    });
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }]
+            })
+        });
 
-    const data = await response.json();
-    return data.candidates[0].content.parts[0].text;
+        const data = await response.json();
+        console.log('Gemini API raw response:', JSON.stringify(data, null, 2));
+
+        if (!data.candidates || !data.candidates[0]?.content?.parts?.[0]?.text) {
+            console.error('Gemini API malformed response:', data);
+            throw new Error('Gemini API returned no candidates or malformed response');
+        }
+
+        return data.candidates[0].content.parts[0].text;
+    } catch (err) {
+        console.error('Error calling Gemini API:', err);
+        throw new Error('Failed to generate content from Gemini API');
+    }
 }
+
 
 // --- Email sender ---
 async function sendEmailViaNodemailer(to, subject, html) {
