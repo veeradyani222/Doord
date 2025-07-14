@@ -6,26 +6,14 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const cors = require('cors');
-
-// Allow requests from all origins (or specify origins for security)
-app.use(cors());
-
 const app = express();
 app.use(bodyParser.json());
 app.use(express.json({ limit: '10mb' }));
 
-// --- MongoDB Connection ---
-async function connectDB() {
-    if (mongoose.connection.readyState === 0) {
-        await mongoose.connect(process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
-        console.log('Connected to MongoDB');
-    }
-}
+app.use(cors());
 
-// --- Schema ---
+mongoose.connect('mongodb+srv://veeradyani2:S%40nju_143@cluster0.uafyz.mongodb.net/Jobs?retryWrites=true&w=majority');
+
 const JobApplicationSchema = new mongoose.Schema({
     userId: { type: String, required: true },
     companyName: { type: String, required: true },
@@ -43,7 +31,7 @@ const JobApplicationSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-const JobApplication = mongoose.models.JobApplication || mongoose.model('JobApplication', JobApplicationSchema);
+const JobApplication = mongoose.model('JobApplication', JobApplicationSchema);
 
 // --- Nodemailer ---
 const transporter = nodemailer.createTransport({
