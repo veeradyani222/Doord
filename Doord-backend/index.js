@@ -76,6 +76,7 @@ async function sendEmailViaNodemailer(to, subject, html) {
     }
 }
 
+
 // --- ROUTES ---
 
 // CREATE a new job application
@@ -95,6 +96,52 @@ app.post('/applications', async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
+
+app.put('/applications/:id', async (req, res) => {
+    try {
+        console.log(`PUT /applications/${req.params.id} called with body:`, req.body);
+
+        
+        const applicationId = req.params.id;
+        const updateData = req.body;
+        
+        // Validate MongoDB ObjectId
+        if (!mongoose.Types.ObjectId.isValid(applicationId)) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Invalid application ID format' 
+            });
+        }
+        
+        const updatedApplication = await JobApplication.findByIdAndUpdate(
+            applicationId, 
+            updateData, 
+            { new: true, runValidators: true }
+        );
+        
+        if (!updatedApplication) {
+            return res.status(404).json({ 
+                success: false, 
+                error: 'Application not found' 
+            });
+        }
+        
+        console.log('Application updated successfully:', updatedApplication._id);
+        res.json({ 
+            success: true, 
+            application: updatedApplication,
+            message: 'Application updated successfully'
+        });
+    } catch (error) {
+        console.error('PUT /applications/:id error:', error);
+        res.status(500).json({ 
+            success: false, 
+            error: error.message,
+            details: 'Error updating application'
+        });
+    }
+});
+
 
 // GET all job applications
 app.get('/applications', async (req, res) => {
