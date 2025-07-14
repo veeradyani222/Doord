@@ -599,6 +599,15 @@ const JobApplicationSchema = new mongoose.Schema({
 
 const JobApplication = mongoose.models.JobApplication || mongoose.model('JobApplication', JobApplicationSchema);
 
+// Configure Nodemailer transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
 // Helper function to call Gemini API
 async function generateWithGemini(prompt) {
   const API_KEY = process.env.GEMINI_API_KEY;
@@ -622,11 +631,29 @@ async function generateWithGemini(prompt) {
   return data.candidates[0].content.parts[0].text;
 }
 
+// Helper function to send email
+async function sendEmailViaNodemailer(to, subject, html) {
+  try {
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to,
+      subject,
+      html
+    };
+
+    await transporter.sendMail(mailOptions);
+    return true;
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return false;
+  }
+}
+
 // API Routes
-export async function POST(req) {
+export async function POST(request) {
   try {
     await connectDB();
-    const { userId, ...applicationData } = await req.json();
+    const { userId, ...applicationData } = await request.json();
 
     const newApplication = new JobApplication({
       ...applicationData,
@@ -648,75 +675,13 @@ export async function POST(req) {
   }
 }
 
-export async function GET(req) {
+// ... [Keep all your other existing routes GET, PUT, DELETE] ...
+
+// Updated PATCH route for email sending
+export async function PATCH(request) {
   try {
     await connectDB();
-    const userId = req.nextUrl.searchParams.get('userId');
-
-    const applications = await JobApplication.find({ userId });
-
-    return NextResponse.json({
-      success: true,
-      applications
-    });
-
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error.message
-    }, { status: 500 });
-  }
-}
-
-export async function PUT(req) {
-  try {
-    await connectDB();
-    const { id, ...updateData } = await req.json();
-
-    const updatedApplication = await JobApplication.findByIdAndUpdate(
-      id,
-      updateData,
-      { new: true }
-    );
-
-    return NextResponse.json({
-      success: true,
-      application: updatedApplication
-    });
-
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error.message
-    }, { status: 500 });
-  }
-}
-
-export async function DELETE(req) {
-  try {
-    await connectDB();
-    const { id } = await req.json();
-
-    await JobApplication.findByIdAndDelete(id);
-
-    return NextResponse.json({
-      success: true,
-      message: 'Application deleted'
-    });
-
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error.message
-    }, { status: 500 });
-  }
-}
-
-// Special Actions
-export async function PATCH(req) {
-  try {
-    await connectDB();
-    const { action, applicationId } = await req.json();
+    const { action, applicationId } = await request.json();
     const application = await JobApplication.findById(applicationId);
 
     if (!application) {
@@ -737,11 +702,24 @@ export async function PATCH(req) {
         
         const emailContent = await generateWithGemini(emailPrompt);
         
-        // In a real app, you would send the email here using Nodemailer or similar
+        // Extract subject and body from generated content
+        const subject = emailContent.split('\n')[0].replace('Subject:', '').trim();
+        const body = emailContent.split('\n').slice(1).join('\n').trim();
+        
+        // Send the email using Nodemailer
+        const emailSent = await sendEmailViaNodemailer(
+          application.founderEmail,
+          subject,
+          body.replace(/\n/g, '<br>')
+        );
+        
+        if (!emailSent) {
+          throw new Error('Failed to send email');
+        }
+        
         result = {
           success: true,
-          message: 'Email generated successfully',
-          content: emailContent,
+          message: 'Email sent successfully',
           to: application.founderEmail
         };
         break;
