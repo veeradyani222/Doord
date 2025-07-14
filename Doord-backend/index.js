@@ -5,6 +5,10 @@ const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const cors = require('cors');
+
+// Allow requests from all origins (or specify origins for security)
+app.use(cors());
 
 const app = express();
 app.use(bodyParser.json());
