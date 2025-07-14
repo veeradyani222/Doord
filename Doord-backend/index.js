@@ -581,6 +581,238 @@ app.put('/merchant/update-profile', fetchMerchant, async (req, res) => {
 
 // ... existing code ...
 
+
+const JobApplicationSchema = new mongoose.Schema({
+  userId: { type: String, required: true },
+  companyName: { type: String, required: true },
+  jobTitle: { type: String, required: true },
+  jobDescription: { type: String, required: true },
+  founderName: { type: String, required: true },
+  founderEmail: { type: String, required: true },
+  dateApplied: { type: Date, default: Date.now },
+  founderLinkedIn: { type: String },
+  companyLinkedIn: { type: String },
+  status: { 
+    type: String, 
+    enum: ['Applied', 'Interviewing', 'Offer', 'Rejected', 'Follow-up Pending', 'Awaiting Response'],
+    default: 'Applied'
+  }
+}, { timestamps: true });
+
+const JobApplication = mongoose.models.JobApplication || mongoose.model('JobApplication', JobApplicationSchema);
+
+// Helper function to call Gemini API
+async function generateWithGemini(prompt) {
+  const API_KEY = process.env.GEMINI_API_KEY;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
+  
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      contents: [{
+        parts: [{
+          text: prompt
+        }]
+      }]
+    })
+  });
+
+  const data = await response.json();
+  return data.candidates[0].content.parts[0].text;
+}
+
+// API Routes
+export async function POST(req) {
+  try {
+    await connectDB();
+    const { userId, ...applicationData } = await req.json();
+
+    const newApplication = new JobApplication({
+      ...applicationData,
+      userId
+    });
+
+    await newApplication.save();
+
+    return NextResponse.json({
+      success: true,
+      application: newApplication
+    });
+
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      error: error.message
+    }, { status: 500 });
+  }
+}
+
+export async function GET(req) {
+  try {
+    await connectDB();
+    const userId = req.nextUrl.searchParams.get('userId');
+
+    const applications = await JobApplication.find({ userId });
+
+    return NextResponse.json({
+      success: true,
+      applications
+    });
+
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      error: error.message
+    }, { status: 500 });
+  }
+}
+
+export async function PUT(req) {
+  try {
+    await connectDB();
+    const { id, ...updateData } = await req.json();
+
+    const updatedApplication = await JobApplication.findByIdAndUpdate(
+      id,
+      updateData,
+      { new: true }
+    );
+
+    return NextResponse.json({
+      success: true,
+      application: updatedApplication
+    });
+
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      error: error.message
+    }, { status: 500 });
+  }
+}
+
+export async function DELETE(req) {
+  try {
+    await connectDB();
+    const { id } = await req.json();
+
+    await JobApplication.findByIdAndDelete(id);
+
+    return NextResponse.json({
+      success: true,
+      message: 'Application deleted'
+    });
+
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      error: error.message
+    }, { status: 500 });
+  }
+}
+
+// Special Actions
+export async function PATCH(req) {
+  try {
+    await connectDB();
+    const { action, applicationId } = await req.json();
+    const application = await JobApplication.findById(applicationId);
+
+    if (!application) {
+      return NextResponse.json({
+        success: false,
+        error: 'Application not found'
+      }, { status: 404 });
+    }
+
+    let result;
+
+    switch (action) {
+      case 'send-email':
+        // Generate email content with Gemini
+        const emailPrompt = `Compose a professional email to ${application.founderName} at ${application.companyName} regarding the ${application.jobTitle} position. 
+        Job description: ${application.jobDescription}.
+        Keep it concise (3-4 paragraphs max), polite, and express continued interest. Include a professional subject line.`;
+        
+        const emailContent = await generateWithGemini(emailPrompt);
+        
+        // In a real app, you would send the email here using Nodemailer or similar
+        result = {
+          success: true,
+          message: 'Email generated successfully',
+          content: emailContent,
+          to: application.founderEmail
+        };
+        break;
+
+      case 'founder-linkedin':
+        const founderPrompt = `Create a LinkedIn connection request message for ${application.founderName} at ${application.companyName} regarding the ${application.jobTitle} position.
+        Job description: ${application.jobDescription}.
+        Keep it professional but friendly, under 300 characters.`;
+        
+        const founderMessage = await generateWithGemini(founderPrompt);
+        
+        result = {
+          success: true,
+          message: 'Founder message generated',
+          content: founderMessage
+        };
+        break;
+
+      case 'company-linkedin':
+        const companyPrompt = `Create a LinkedIn message for ${application.companyName} regarding the ${application.jobTitle} position.
+        Job description: ${application.jobDescription}.
+        Keep it professional but enthusiastic, under 300 characters.`;
+        
+        const companyMessage = await generateWithGemini(companyPrompt);
+        
+        result = {
+          success: true,
+          message: 'Company message generated',
+          content: companyMessage
+        };
+        break;
+
+      case 'follow-up':
+        const followUpPrompt = `Create a follow-up message for ${application.founderName} at ${application.companyName} regarding the ${application.jobTitle} position.
+        Original application date: ${application.dateApplied}.
+        Keep it polite and professional, expressing continued interest.`;
+        
+        const followUpMessage = await generateWithGemini(followUpPrompt);
+        
+        // Update status in database
+        await JobApplication.findByIdAndUpdate(applicationId, {
+          status: 'Follow-up Pending'
+        });
+        
+        result = {
+          success: true,
+          message: 'Follow-up message generated',
+          content: followUpMessage,
+          statusUpdated: true
+        };
+        break;
+
+      default:
+        return NextResponse.json({
+          success: false,
+          error: 'Invalid action'
+        }, { status: 400 });
+    }
+
+    return NextResponse.json(result);
+
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      error: error.message
+    }, { status: 500 });
+  }
+}
+
 app.listen(port, (error) => {
     if (!error) {
         console.log("Server is running on " + port);
