@@ -234,6 +234,8 @@ Include line breaks where necessary for readability.
 
 Avoid generic statements — personalize based on the role and my experience.
 
+ALSO I REPEAT-  Generate a professional, concise, and human-like cold email without adding any introductory remarks about the email itself. Do not include meta-comments like "Here's a professional email" or formatting markers such as ***, --- or Subject:. The email should flow naturally without unnecessary markers. Avoid making claims that aren't provided, such as "I have attached my resume." Keep the tone polished, personalized, and directly relevant to the provided data, making it seem as if written thoughtfully by an experienced candidate. Maintain proper structure with a polite greeting, body, and a professional closing — all styled formally yet approachable.
+
 `;
 
                 const emailContent = await generateWithGemini(emailPrompt);
@@ -297,7 +299,11 @@ Email Requirements:
 - Under 4 concise paragraphs
 - Include line breaks for readability
 
-Target: HR team or hiring manager at ${application.companyName}`;
+Target: HR team or hiring manager at ${application.companyName}
+
+ALSO I REPEAT-  Generate a professional, concise, and human-like cold email without adding any introductory remarks about the email itself. Do not include meta-comments like "Here's a professional email" or formatting markers such as ***, --- or Subject:. The email should flow naturally without unnecessary markers. Avoid making claims that aren't provided, such as "I have attached my resume." Keep the tone polished, personalized, and directly relevant to the provided data, making it seem as if written thoughtfully by an experienced candidate. Maintain proper structure with a polite greeting, body, and a professional closing — all styled formally yet approachable.`
+
+;
 
     const companyEmailContent = await generateWithGemini(companyEmailPrompt);
     const [companySubjectLine, ...companyBodyLines] = companyEmailContent.split('\n');
@@ -352,7 +358,9 @@ This is me — I am Veer Adyani: always building, always learning, always growin
 
 ### Additional Info:
 - I have prior experience in projects relevant to the role.
-- I'm genuinely interested in ${application.companyName}'s mission and growth.`;
+- I'm genuinely interested in ${application.companyName}'s mission and growth.
+
+ALSO I REPEAT-  Generate a professional, concise, and human-like cold email without adding any introductory remarks about the email itself. Do not include meta-comments like "Here's a professional email" or formatting markers such as ***, --- or Subject:. The email should flow naturally without unnecessary markers. Avoid making claims that aren't provided, such as "I have attached my resume." Keep the tone polished, personalized, and directly relevant to the provided data, making it seem as if written thoughtfully by an experienced candidate. Maintain proper structure with a polite greeting, body, and a professional closing — all styled formally yet approachable.`;
 
                 const founderMessage = await generateWithGemini(founderPrompt);
 
@@ -401,7 +409,9 @@ This is me — I am Veer Adyani: always building, always learning, always growin
 ### Additional Guidelines:
 - Do not use generic phrases like "I would like to connect."
 - The message should hint at my value proposition without sounding salesy.
-- Keep it natural for a LinkedIn direct message.`;
+- Keep it natural for a LinkedIn direct message.
+
+ALSO I REPEAT-  Generate a professional, concise, and human-like cold email without adding any introductory remarks about the email itself. Do not include meta-comments like "Here's a professional email" or formatting markers such as ***, --- or Subject:. The email should flow naturally without unnecessary markers. Avoid making claims that aren't provided, such as "I have attached my resume." Keep the tone polished, personalized, and directly relevant to the provided data, making it seem as if written thoughtfully by an experienced candidate. Maintain proper structure with a polite greeting, body, and a professional closing — all styled formally yet approachable.`;
 
                 const companyMessage = await generateWithGemini(companyPrompt);
 
@@ -453,7 +463,9 @@ This is me — I am Veer Adyani: always building, always learning, always growin
 ### Additional Instructions:
 - Ensure the message feels personalized, not generic.
 - Avoid sounding impatient or demanding.
-- Each follow-up should vary slightly to feel natural if sent weekly.`;
+- Each follow-up should vary slightly to feel natural if sent weekly.
+
+ALSO I REPEAT-  Generate a professional, concise, and human-like cold email without adding any introductory remarks about the email itself. Do not include meta-comments like "Here's a professional email" or formatting markers such as ***, --- or Subject:. The email should flow naturally without unnecessary markers. Avoid making claims that aren't provided, such as "I have attached my resume." Keep the tone polished, personalized, and directly relevant to the provided data, making it seem as if written thoughtfully by an experienced candidate. Maintain proper structure with a polite greeting, body, and a professional closing — all styled formally yet approachable.`;
 
                 const followUpMessage = await generateWithGemini(followUpPrompt);
 
