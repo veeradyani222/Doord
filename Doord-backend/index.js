@@ -213,6 +213,7 @@ I’ve also created impactful projects like:
 My problem-solving abilities shined at the vCode Hackathon, where I secured First Runner-Up with Safeloop, a web application for community safety and incident reporting — built within tight hackathon deadlines.
 When I’m not coding, I’m journaling, engaging in public speaking, playing table tennis or badminton, and connecting with people to learn and grow. I’m fluent in English and Hindi, driven by curiosity, innovation, and a desire to build tech that creates real impact.
 📂 My GitHub: github.com/veeradyani222
+My Portfolio: https://veeradyani.vercel.app/
 This is me — I am Veer Adyani: always building, always learning, always growing.
 
 
@@ -241,6 +242,8 @@ Also include my GitHub link at the end along with the portfolio link.
 
 ALSO I REPEAT-  Generate a professional, concise, and human-like cold email without adding any introductory remarks about the email itself. Do not include meta-comments like "Here's a professional email" or formatting markers such as ***, --- or Subject:. The email should flow naturally without unnecessary markers. Avoid making claims that aren't provided, such as "I have attached my resume." Keep the tone polished, personalized, and directly relevant to the provided data, making it seem as if written thoughtfully by an experienced candidate. Maintain proper structure with a polite greeting, body, and a professional closing — all styled formally yet approachable.
 
+
+Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.
 `;
                 const emailContent = await generateWithGemini(emailPrompt);
                 const [subjectLine, ...bodyLines] = emailContent.split('\n');
@@ -288,6 +291,7 @@ I’ve also created impactful projects like:
 My problem-solving abilities shined at the vCode Hackathon, where I secured First Runner-Up with Safeloop, a web application for community safety and incident reporting — built within tight hackathon deadlines.
 When I’m not coding, I’m journaling, engaging in public speaking, playing table tennis or badminton, and connecting with people to learn and grow. I’m fluent in English and Hindi, driven by curiosity, innovation, and a desire to build tech that creates real impact.
 📂 My GitHub: github.com/veeradyani222
+My Portfolio: https://veeradyani.vercel.app/
 This is me — I am Veer Adyani: always building, always learning, always growing.
 
 
@@ -304,7 +308,9 @@ Also include my GitHub link at the end along with the portfolio link.
 
 Target: HR team or hiring manager at ${application.companyName}
 
-ALSO I REPEAT-  Generate a professional, concise, and human-like cold email without adding any introductory remarks about the email itself. Do not include meta-comments like "Here's a professional email" or formatting markers such as ***, --- or Subject:. The email should flow naturally without unnecessary markers. Avoid making claims that aren't provided, such as "I have attached my resume." Keep the tone polished, personalized, and directly relevant to the provided data, making it seem as if written thoughtfully by an experienced candidate. Maintain proper structure with a polite greeting, body, and a professional closing — all styled formally yet approachable.`
+ALSO I REPEAT-  Generate a professional, concise, and human-like cold email without adding any introductory remarks about the email itself. Do not include meta-comments like "Here's a professional email" or formatting markers such as ***, --- or Subject:. The email should flow naturally without unnecessary markers. Avoid making claims that aren't provided, such as "I have attached my resume." Keep the tone polished, personalized, and directly relevant to the provided data, making it seem as if written thoughtfully by an experienced candidate. Maintain proper structure with a polite greeting, body, and a professional closing — all styled formally yet approachable.
+
+Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.`
 
 ;
 
@@ -348,6 +354,7 @@ I’ve also created impactful projects like:
 My problem-solving abilities shined at the vCode Hackathon, where I secured First Runner-Up with Safeloop, a web application for community safety and incident reporting — built within tight hackathon deadlines.
 When I’m not coding, I’m journaling, engaging in public speaking, playing table tennis or badminton, and connecting with people to learn and grow. I’m fluent in English and Hindi, driven by curiosity, innovation, and a desire to build tech that creates real impact.
 📂 My GitHub: github.com/veeradyani222
+My Portfolio: https://veeradyani.vercel.app/
 This is me — I am Veer Adyani: always building, always learning, always growing.
 
 
@@ -365,7 +372,9 @@ This is me — I am Veer Adyani: always building, always learning, always growin
 Also include my GitHub link at the end along with the portfolio link.
 "When including any links, insert them directly as hyperlinks in the text without prefacing them with phrases like 'Here is the link:' or 'Link:' or 'GitHub link:'. The links should be seamlessly embedded within the sentence."
 
-ALSO I REPEAT-  Generate a professional, concise, and human-like cold email without adding any introductory remarks about the email itself. Do not include meta-comments like "Here's a professional email" or formatting markers such as ***, --- or Subject:. The email should flow naturally without unnecessary markers. Avoid making claims that aren't provided, such as "I have attached my resume." Keep the tone polished, personalized, and directly relevant to the provided data, making it seem as if written thoughtfully by an experienced candidate. Maintain proper structure with a polite greeting, body, and a professional closing — all styled formally yet approachable.;`
+ALSO I REPEAT-  Generate a professional, concise, and human-like cold email without adding any introductory remarks about the email itself. Do not include meta-comments like "Here's a professional email" or formatting markers such as ***, --- or Subject:. The email should flow naturally without unnecessary markers. Avoid making claims that aren't provided, such as "I have attached my resume." Keep the tone polished, personalized, and directly relevant to the provided data, making it seem as if written thoughtfully by an experienced candidate. Maintain proper structure with a polite greeting, body, and a professional closing — all styled formally yet approachable.;
+
+Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.`
 
 
                 const founderMessage = await generateWithGemini(founderPrompt);
@@ -423,6 +432,7 @@ I’ve also created impactful projects like:
 My problem-solving abilities shined at the vCode Hackathon, where I secured First Runner-Up with Safeloop, a web application for community safety and incident reporting — built within tight hackathon deadlines.
 When I’m not coding, I’m journaling, engaging in public speaking, playing table tennis or badminton, and connecting with people to learn and grow. I’m fluent in English and Hindi, driven by curiosity, innovation, and a desire to build tech that creates real impact.
 📂 My GitHub: github.com/veeradyani222
+My Portfolio: https://veeradyani.vercel.app/
 This is me — I am Veer Adyani: always building, always learning, always growing.
 
 
@@ -441,7 +451,9 @@ This is me — I am Veer Adyani: always building, always learning, always growin
 - No flattery or generic statements
 - Do NOT include "Here's the email" or any meta comments.
 Also include my GitHub link at the end. along w the portfolio link.
-"When including any links, insert them directly as hyperlinks in the text without prefacing them with phrases like 'Here is the link:' or 'Link:' or 'GitHub link:'. The links should be seamlessly embedded within the sentence."
+"When including any links, insert them directly as hyperlinks in the text without prefacing them with phrases like 'Here is the link:' or 'Link:' or 'GitHub link:'. The links should be seamlessly embedded within the sentence.
+"
+Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.
 
 Generate a concise, human-like follow-up email fulfilling the above.`; // Founder Email follow-up prompt
                         break;
@@ -471,6 +483,7 @@ I’ve also created impactful projects like:
 My problem-solving abilities shined at the vCode Hackathon, where I secured First Runner-Up with Safeloop, a web application for community safety and incident reporting — built within tight hackathon deadlines.
 When I’m not coding, I’m journaling, engaging in public speaking, playing table tennis or badminton, and connecting with people to learn and grow. I’m fluent in English and Hindi, driven by curiosity, innovation, and a desire to build tech that creates real impact.
 📂 My GitHub: github.com/veeradyani222
+My Portfolio: https://veeradyani.vercel.app/
 This is me — I am Veer Adyani: always building, always learning, always growing.
 
 
@@ -488,7 +501,9 @@ This is me — I am Veer Adyani: always building, always learning, always growin
 - Avoid flattery or generic statements
 - Human-like tone, no meta statements
 - Also include my GitHub link at the end along with the portfolio link.
-"When including any links, insert them directly as hyperlinks in the text without prefacing them with phrases like 'Here is the link:' or 'Link:' or 'GitHub link:'. The links should be seamlessly embedded within the sentence."
+"When including any links, insert them directly as hyperlinks in the text without prefacing them with phrases like 'Here is the link:' or 'Link:' or 'GitHub link:'. The links should be seamlessly embedded within the sentence.
+
+Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer."
 
 Generate the follow-up email accordingly.`; // Company Email follow-up prompt
                         break;
@@ -518,6 +533,7 @@ I’ve also created impactful projects like:
 My problem-solving abilities shined at the vCode Hackathon, where I secured First Runner-Up with Safeloop, a web application for community safety and incident reporting — built within tight hackathon deadlines.
 When I’m not coding, I’m journaling, engaging in public speaking, playing table tennis or badminton, and connecting with people to learn and grow. I’m fluent in English and Hindi, driven by curiosity, innovation, and a desire to build tech that creates real impact.
 📂 My GitHub: github.com/veeradyani222
+My Portfolio: https://veeradyani.vercel.app/
 This is me — I am Veer Adyani: always building, always learning, always growing.
 
 
@@ -534,7 +550,8 @@ This is me — I am Veer Adyani: always building, always learning, always growin
 -Also include my GitHub link at the end along with the portfolio link.
 "When including any links, insert them directly as hyperlinks in the text without prefacing them with phrases like 'Here is the link:' or 'Link:' or 'GitHub link:'. The links should be seamlessly embedded within the sentence."
 
-ALSO I REPEAT: Do not include any meta-comment like "Here's the message." Only generate the final message.`; // Founder LinkedIn follow-up prompt
+ALSO I REPEAT: Do not include any meta-comment like "Here's the message." Only generate the final message.
+Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.`; // Founder LinkedIn follow-up prompt
                         break;
 
                     case 'company-linkedin':
@@ -562,6 +579,7 @@ I’ve also created impactful projects like:
 My problem-solving abilities shined at the vCode Hackathon, where I secured First Runner-Up with Safeloop, a web application for community safety and incident reporting — built within tight hackathon deadlines.
 When I’m not coding, I’m journaling, engaging in public speaking, playing table tennis or badminton, and connecting with people to learn and grow. I’m fluent in English and Hindi, driven by curiosity, innovation, and a desire to build tech that creates real impact.
 📂 My GitHub: github.com/veeradyani222
+
 This is me — I am Veer Adyani: always building, always learning, always growing.
 
 
@@ -576,7 +594,8 @@ This is me — I am Veer Adyani: always building, always learning, always growin
 - No generic or salesy statements
 - No meta-comments like "Here's your message"
 -Also include my GitHub link at the end along with the portfolio link.
-"When including any links, insert them directly as hyperlinks in the text without prefacing them with phrases like 'Here is the link:' or 'Link:' or 'GitHub link:'. The links should be seamlessly embedded within the sentence."
+"When including any links, insert them directly as hyperlinks in the text without prefacing them with phrases like 'Here is the link:' or 'Link:' or 'GitHub link:'. The links should be seamlessly embedded within the sentence.
+Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer."
 
 Generate the final message under 300 characters.`; // Company LinkedIn follow-up prompt
                         break;
