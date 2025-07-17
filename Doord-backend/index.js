@@ -195,7 +195,7 @@ app.patch('/applications/:id', async (req, res) => {
                     const name = application.founderName[i];
                     const email = application.founderEmail[i];
 
-                 const emailPrompt = `Compose a highly professional, concise, yet compelling cold email to ${application.founderName}, founder of ${application.companyName}, for the role of ${application.jobTitle}.
+                 const emailPrompt = `Compose a highly professional, concise, yet compelling cold email to ${application.founderName}, founder of ${name}, for the role of ${application.jobTitle}.
 
 Context:
 Job Description: ${application.jobDescription}.
@@ -287,7 +287,7 @@ Also pls if u dont have some data u wanna write about in the message and u dont 
                 for (let i = 0; i < application.founderName.length; i++) {
                     const name = application.founderName[i];
 
-                const founderPrompt = `Create a concise, professional yet friendly LinkedIn connection request message (strictly under 300 characters) for ${application.founderName}, founder of ${application.companyName}. This is in regard to my application for the ${application.jobTitle} position.
+                const founderPrompt = `Create a concise, professional yet friendly LinkedIn connection request message (strictly under 300 characters) for ${name}, founder of ${application.companyName}. This is in regard to my application for the ${application.jobTitle} position.
 
 ### Job Description:
 ${application.jobDescription}
