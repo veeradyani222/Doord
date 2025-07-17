@@ -250,6 +250,8 @@ ALSO I REPEAT-  Generate a professional, concise, and human-like cold email with
 
 Also u dont have tpo include any headings like the email, no hashtags to show the heading, pls understand that this is a part of an automated functionality so no human interference will be done to your answer. Just respons witht he message content directly without any additional formatting or headings. i hope u understand that this is a part of an automated functionality so no human interference will be done to your answer.
 
+also the msg shdnot be very short, it should highlight my things properly and how they align w the jobs desc properly.
+
 Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.
 `;
                     
@@ -334,6 +336,8 @@ ALSO I REPEAT-  Generate a professional, concise, and human-like cold email with
 
 Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.
 Also u dont have tpo include any headings like the email, no hashtags to show the heading, pls understand that this is a part of an automated functionality so no human interference will be done to your answer. Just respons witht he message content directly without any additional formatting or headings. i hope u understand that this is a part of an automated functionality so no human interference will be done to your answer.
+
+Also the msg shdnot be very short, it should highlight my things properly and how they align w the jobs desc properly.
 `
 
                     
@@ -400,6 +404,8 @@ ALSO I REPEAT-  Generate a professional, concise, and human-like cold email with
 
 Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.
 
+also the msg shdnot be very short, it should highlight my things properly and how they align w the jobs desc properly.
+
 Also u dont have tpo include any headings like the email, no hashtags to show the heading, pls understand that this is a part of an automated functionality so no human interference will be done to your answer. Just respons witht he message content directly without any additional formatting or headings. i hope u understand that this is a part of an automated functionality so no human interference will be done to your answer.`;
                 
                 const companyEmailContent = await generateWithGemini(companyEmailPrompt);
@@ -448,6 +454,8 @@ This is me — I am Veer Adyani: always building, always learning, always growin
 - Reaffirm interest in the ${application.jobTitle} role.
 - Express admiration for ${application.companyName}'s vision.
 - Politely express my enthusiasm to connect.
+
+also the msg shdnot be very short, it should highlight my things properly and how they align w the jobs desc properly.
 
 ### Guidelines:
 - Respectful, non-pushy
@@ -520,6 +528,8 @@ This is me — I am Veer Adyani: always building, always learning, always growin
 -Also include my GitHub link at the end along with the portfolio link.
 "When including any links, insert them directly as hyperlinks in the text without prefacing them with phrases like 'Here is the link:' or 'Link:' or 'GitHub link:'. The links should be seamlessly embedded within the sentence."
 
+also the msg shdnot be very short, it should highlight my things properly and how they align w the jobs desc properly.
+
 ALSO I REPEAT: Do not include any meta-comment like "Here's the message." Only generate the final message.
 Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.
 
@@ -565,6 +575,7 @@ When I’m not coding, I’m journaling, engaging in public speaking, playing ta
 My Portfolio: https://veeradyani.vercel.app/
 This is me — I am Veer Adyani: always building, always learning, always growing.
 
+also the msg shdnot be very short, it should highlight my things properly and how they align w the jobs desc properly.
 
 ### Objectives:
 - Mention that this is a follow-up to my application.
