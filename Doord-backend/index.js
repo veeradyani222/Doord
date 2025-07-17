@@ -248,6 +248,7 @@ Also include my GitHub link at the end along with the portfolio link.
 
 ALSO I REPEAT-  Generate a professional, concise, and human-like cold email without adding any introductory remarks about the email itself. Do not include meta-comments like "Here's a professional email" or formatting markers such as ***, --- or Subject:. The email should flow naturally without unnecessary markers. Avoid making claims that aren't provided, such as "I have attached my resume." Keep the tone polished, personalized, and directly relevant to the provided data, making it seem as if written thoughtfully by an experienced candidate. Maintain proper structure with a polite greeting, body, and a professional closing — all styled formally yet approachable.
 
+Also u dont have tpo include any headings like the email, no hashtags to show the heading, pls understand that this is a part of an automated functionality so no human interference will be done to your answer. Just respons witht he message content directly without any additional formatting or headings. i hope u understand that this is a part of an automated functionality so no human interference will be done to your answer.
 
 Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.
 `;
@@ -331,7 +332,10 @@ Also include my GitHub link at the end along with the portfolio link.
 
 ALSO I REPEAT-  Generate a professional, concise, and human-like cold email without adding any introductory remarks about the email itself. Do not include meta-comments like "Here's a professional email" or formatting markers such as ***, --- or Subject:. The email should flow naturally without unnecessary markers. Avoid making claims that aren't provided, such as "I have attached my resume." Keep the tone polished, personalized, and directly relevant to the provided data, making it seem as if written thoughtfully by an experienced candidate. Maintain proper structure with a polite greeting, body, and a professional closing — all styled formally yet approachable.;
 
-Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.`
+Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.
+Also u dont have tpo include any headings like the email, no hashtags to show the heading, pls understand that this is a part of an automated functionality so no human interference will be done to your answer. Just respons witht he message content directly without any additional formatting or headings. i hope u understand that this is a part of an automated functionality so no human interference will be done to your answer.
+`
+
                     
                     const founderMessage = await generateWithGemini(founderPrompt);
 
@@ -394,7 +398,9 @@ Target: HR team or hiring manager at ${application.companyName}
 
 ALSO I REPEAT-  Generate a professional, concise, and human-like cold email without adding any introductory remarks about the email itself. Do not include meta-comments like "Here's a professional email" or formatting markers such as ***, --- or Subject:. The email should flow naturally without unnecessary markers. Avoid making claims that aren't provided, such as "I have attached my resume." Keep the tone polished, personalized, and directly relevant to the provided data, making it seem as if written thoughtfully by an experienced candidate. Maintain proper structure with a polite greeting, body, and a professional closing — all styled formally yet approachable.
 
-Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.`;
+Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.
+
+Also u dont have tpo include any headings like the email, no hashtags to show the heading, pls understand that this is a part of an automated functionality so no human interference will be done to your answer. Just respons witht he message content directly without any additional formatting or headings. i hope u understand that this is a part of an automated functionality so no human interference will be done to your answer.`;
                 
                 const companyEmailContent = await generateWithGemini(companyEmailPrompt);
                 const [companySubjectLine, ...companyBodyLines] = companyEmailContent.split('\n');
@@ -452,7 +458,7 @@ This is me — I am Veer Adyani: always building, always learning, always growin
 
 ALSO I REPEAT: Do not include any meta-comment like "Here's the message." Only generate the final message.
 Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.
-                `;
+              Also u dont have tpo include any headings like the email, no hashtags to show the heading, pls understand that this is a part of an automated functionality so no human interference will be done to your answer. Just respons witht he message content directly without any additional formatting or headings. i hope u understand that this is a part of an automated functionality so no human interference will be done to your answer.  `;
                 
                 const companyMessage = await generateWithGemini(companyPrompt);
 
@@ -515,7 +521,11 @@ This is me — I am Veer Adyani: always building, always learning, always growin
 "When including any links, insert them directly as hyperlinks in the text without prefacing them with phrases like 'Here is the link:' or 'Link:' or 'GitHub link:'. The links should be seamlessly embedded within the sentence."
 
 ALSO I REPEAT: Do not include any meta-comment like "Here's the message." Only generate the final message.
-Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.`;
+Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.
+
+Also u dont have tpo include any headings like the email, no hashtags to show the heading, pls understand that this is a part of an automated functionality so no human interference will be done to your answer. Just respons witht he message content directly without any additional formatting or headings. i hope u understand that this is a part of an automated functionality so no human interference will be done to your answer.
+`;
+
 
                         const content = await generateWithGemini(followUpPrompt);
                         followUps.push({
@@ -570,7 +580,10 @@ This is me — I am Veer Adyani: always building, always learning, always growin
 "When including any links, insert them directly as hyperlinks in the text without prefacing them with phrases like 'Here is the link:' or 'Link:' or 'GitHub link:'. The links should be seamlessly embedded within the sentence."
 
 ALSO I REPEAT: Do not include any meta-comment like "Here's the message." Only generate the final message.
-Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.`;
+Also pls if u dont have some data u wanna write about in the message and u dont have it from my prompt, just manaeg it rather than leaving spaces for me to fill or replace. pls understand that your response will be a part of an automadted functionality so no human interference will be done to hyour answer.
+Also u dont have tpo include any headings like the email, no hashtags to show the heading, pls understand that this is a part of an automated functionality so no human interference will be done to your answer. Just respons witht he message content directly without any additional formatting or headings. i hope u understand that this is a part of an automated functionality so no human interference will be done to your answer.
+`;
+
 
                         const content = await generateWithGemini(followUpPrompt);
                         followUps.push({
